@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Async Patterns and Callbacks: Polling, Webhooks, and Events – Agentic Automation Professional – UiPath</title>
+<meta name="description" content="Async Patterns and Callbacks: Polling, Webhooks, and Events">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="shell">
+<header class="topbar">
+  <button class="topbar__toggle" aria-label="Toggle course menu" aria-controls="sidebar" id="menuToggle">&#9776;</button>
+  <a class="topbar__brand" href="../index.html">Agentic Automation <span>Professional</span></a>
+</header>
+<div class="backdrop" id="backdrop"></div>
+<nav class="sidebar" id="sidebar" aria-label="Course lessons">
+  <a class="sidebar__brand" href="../index.html">Agentic Automation <span>Professional</span></a>
+  <div class="sidebar__kicker">UiPath Technical Enablement</div>
+  <a class="sidebar__course-link" href="../index.html">&larr; Course overview</a>
+  <ul class="rail">
+    <li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-01.html"><span class="rail__num">01</span>Introduction to Agentic Automation and UiPath Agent Types</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-02.html"><span class="rail__num">02</span>Identifying Use Cases for Agentic Automation</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-03.html"><span class="rail__num">03</span>Designing Agent Stories and Workflows</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-04.html"><span class="rail__num">04</span>Applying Context Grounding for Secure, Accurate AI</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-05.html"><span class="rail__num">05</span>Implementing and Configuring Context Grounding in UiPath</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-06.html"><span class="rail__num">06</span>Knowledge Indexing &amp; Retrieval with Context Grounding</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-07.html"><span class="rail__num">07</span>Integrating Agents with Enterprise Systems and Context</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-08.html"><span class="rail__num">08</span>Evaluating, Monitoring, and Improving Agent Performance</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-09.html"><span class="rail__num">09</span>Developing Coded Agents with Python and UiPath SDKs</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-10.html"><span class="rail__num">10</span>Deploying and Integrating Coded Agents with UiPath Orchestrator</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-11.html"><span class="rail__num">11</span>Understanding UiPath Coded Agents: Architecture and Core Components</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-12.html"><span class="rail__num">12</span>Implementing Human-in-the-Loop (HITL) Interrupt Flows</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-13.html"><span class="rail__num">13</span>Securing Agent Operations: Environment Variables and Asset Management</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-14.html"><span class="rail__num">14</span>Tracing, Debugging, and Optimizing Agent Execution</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-15.html"><span class="rail__num">15</span>Why Synchronous Execution Fails and the Shift to Asynchronous</a></li><li class="rail__item is-active"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-16.html"><span class="rail__num">16</span>Async Patterns and Callbacks: Polling, Webhooks, and Events</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-17.html"><span class="rail__num">17</span>Handling Failures and Monitoring Asynchronous Workflows</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-18.html"><span class="rail__num">18</span>Process Variables &amp; User Task Configuration in Maestro</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-19.html"><span class="rail__num">19</span>SLAs, Escalation Rules &amp; Expiry Timers</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-20.html"><span class="rail__num">20</span>Data-Driven Routing &amp; Workflow Decisions</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-21.html"><span class="rail__num">21</span>API Workflows: Design, Build &amp; Secure Integration</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-22.html"><span class="rail__num">22</span>Event-Driven Integration: Webhooks &amp; Failure Resilience</a></li><li class="rail__item"><span class="rail__connector"></span><span class="rail__node"></span><a class="rail__link" href="lesson-23.html"><span class="rail__num">23</span>Configuring &amp; Managing Autopilot for Business Users</a></li>
+  </ul>
+</nav>
+<main class="main" id="main">
+<div class="content-wrap">
+<div class="breadcrumb"><a href="../index.html">Agentic Automation Professional</a> / Lesson 16</div>
+<div class="lesson-eyebrow">Lesson 16 of 23</div>
+<h1 class="lesson-title">Async Patterns and Callbacks: Polling, Webhooks, and Events</h1>
+<div class="lesson-body">
+<h2 id="how-do-asynchronous-agent-jobs-actually-work">How Do Asynchronous Agent Jobs Actually Work?</h2>
+<p>Asynchronous agent execution is the backbone of modern, scalable e-commerce systems. In this lesson, you'll discover how async jobs move through their lifecycle, how systems keep track of them, and the different ways your platform can be notified when work is done. Mastering these mechanics is essential for building order processing workflows that are both efficient and resilient—no matter how many orders you handle.</p>
+<p>This lesson will guide you through key concepts and strategies for managing asynchronous agent jobs in e-commerce systems. You will explore the lifecycle of these jobs, the importance of tracking mechanisms, and various callback patterns to optimize your workflow.</p>
+<div class="objectives"><h2>What you’ll learn</h2><ol><li>Map out the lifecycle of an asynchronous agent job.</li><li>Understand the critical role of Job IDs in tracking and managing jobs.</li><li>Compare and contrast polling, webhook, and event-driven callback patterns.</li><li>Select the right callback strategy for different e-commerce scenarios.</li><li>Apply practical examples to reinforce your understanding.</li></ol></div>
+<h2 id="essential-terms-for-async-job-management">Essential Terms for Async Job Management</h2>
+<p>Review these essential terms to build a strong foundation for async job management.</p>
+<p>A unique identifier returned when Job ID</p>
+<p>you trigger an async job; used to track status and match results.</p>
+<p>The possible states of a job—</p>
+<h3 id="job-statuses">Job Statuses</h3>
+<p>Pending, Running, Completed, Failed, Timed Out, Cancelled.</p>
+<p>A mechanism for notifying your Callback</p>
+<p>system when an async job finishes, so you don't have to keep checking.</p>
+<h2 id="polling">Polling</h2>
+<p>A pattern where your system repeatedly checks the status of a job until it completes.</p>
+<p>A callback pattern where the Webhook</p>
+<p>system sends an HTTP POST to your endpoint when the job is done.</p>
+<p>A pattern where job completion is Event-Driven Callback</p>
+<p>published to an event bus, allowing multiple systems to react.</p>
+<h2 id="journey-of-an-asynchronous-agent-job">Journey of an Asynchronous Agent Job</h2>
+<p>Explore the lifecycle of an asynchronous agent job, from initiation to completion, including how the system handles each stage.</p>
+<p>Step 1</p>
+<h3 id="job-triggered">Job Triggered</h3>
+<p>The orchestration system sends a request to start the agent and immediately receives a Job ID in response.</p>
+<p>Step 2</p>
+<h3 id="pending">Pending</h3>
+<p>The job is accepted and waits for execution capacity. The system stores the Job ID and continues with other work.</p>
+<p>Step 3</p>
+<h3 id="running">Running</h3>
+<p>The agent is actively executing the assigned task. No further action is needed except to wait for completion.</p>
+<ul><li>Step 4</li><li>Completed / Failed / Timed Out / Cancelled</li><li>The job reaches a terminal state—either it finishes successfully, fails, times out, or is cancelled. The result or error is generated.</li></ul>
+<ol class="steps"><li class="step"><div class="step__num">1</div><div class="step__title">Callback/Event</div><div class="step__body">The system is notified of the job's completion through a callback or event, allowing it to process the result or handle errors.</div></li></ol>
+<h2 id="async-job-lifecycle-stages">Async Job Lifecycle Stages</h2>
+<p>Explore each stage of the asynchronous job lifecycle and understand the required actions at every step.</p>
+<h2 id="pending-job-accepted-awaiting-execution">Pending: Job Accepted, Awaiting Execution</h2>
+<p>When a job is in the Pending state, it has been accepted by the orchestration system but is waiting for available execution capacity. At this stage, store the Job ID and continue processing other tasks—there's no need to wait.</p>
+<h2 id="running-agent-is-executing">Running: Agent Is Executing</h2>
+<p>The job is now actively running. The agent is performing its assigned work in the background. Do not re-trigger the job or intervene; simply wait for it to reach a terminal state.</p>
+<h2 id="completed-job-finished-successfully">Completed: Job Finished Successfully</h2>
+<p>The agent has completed its work, and the output is now available. This is the ideal outcome. Retrieve the output using the Job ID and trigger any necessary downstream steps in your workflow.</p>
+<h2 id="failed-agent-encountered-an-error">Failed: Agent Encountered an Error</h2>
+<p>The job stopped due to an error—perhaps a system issue or unexpected input. Log the error, record the Job ID, and route the task to a fallback process or manual review as needed.</p>
+<h2 id="timed-out-job-exceeded-allowed-duration">Timed Out: Job Exceeded Allowed Duration</h2>
+<p>The job took longer than the maximum allowed time and was terminated by the system. Log the timeout event, note the Job ID, and decide whether to retry or escalate the issue.</p>
+<h2 id="cancelled-job-was-explicitly-cancelled">Cancelled: Job Was Explicitly Cancelled</h2>
+<p>The job was cancelled before it could finish, either by user action or system intervention. Clean up any related state and handle the cancellation gracefully in your workflow.</p>
+<h2 id="callback-patterns-how-systems-get-notified">Callback Patterns: How Systems Get Notified</h2>
+<p>Once an async agent job reaches a terminal state, your system needs to know about it. There are several ways to receive this notification, each with its own strengths and best-fit scenarios. Understanding these callback patterns is crucial for designing workflows that are both responsive and scalable.</p>
+<h2 id="async-agent-callback-patterns-in-ecommerce">Async Agent Callback Patterns in ECommerce</h2>
+<p>Explore the three main callback patterns used in async agent workflows. Click each tab to see how it works in an e-commerce scenario.</p>
+<div class="tabs"><div class="tabs__nav"><button type="button" class="tabs__btn is-active">Polling</button><button type="button" class="tabs__btn">Webhook</button><button type="button" class="tabs__btn">Event-driven</button></div><div class="tabs__panel is-active"><p>Polling is the simplest callback pattern. After triggering an agent job and receiving a Job ID, your system waits a set interval—such as five seconds—then asks, "What is the status of Job ID X?" If the job is still running, it waits and polls again. This cycle continues until the job reaches a terminal state. In a basic order tracking scenario, polling might be used during development or in low-volume environments where setting up webhooks isn't practical. The main advantage is simplicity, but it can create unnecessary server load and introduce latency if the polling interval is too long.</p></div><div class="tabs__panel"><p>With the webhook pattern, you provide a callback URL when triggering the agent job. Once the job completes, the orchestration system sends an HTTP POST to your endpoint with the job result. Your system receives the payload, extracts the result, and updates the order or triggers downstream actions.</p><p>For real-time order updates, webhooks are ideal. For example, when a customer places an order, the system can immediately notify your backend as soon as the warehouse assignment is complete, ensuring customers and staff get prompt updates without constant polling.</p></div><div class="tabs__panel"><p>Event-driven callbacks use a shared event bus or message queue. When an agent job finishes, it publishes a 'JobCompleted' event. Any number of downstream systems can subscribe to this event and react independently—updating orders, sending emails, or adjusting inventory. This pattern is perfect for complex e-commerce environments. For instance, when an order is completed, three separate systems—order management, customer notifications, and inventory —can all receive the event and take action, even if they're owned by different teams.</p></div></div>
+<p>Callback Patterns at a Glance</p>
+<p>Explore the differences between polling, webhook, and event-driven callback patterns. Understand their complexity, efficiency, and the scenarios where each excels.</p>
+<p>Polling: When to Use and Limitations</p>
+<p>Polling is best for simple integrations, development, or testing environments where setting up endpoints is difficult. It's easy to implement but creates extra server load and doesn't scale well for high-volume workflows. Latency can also be an issue—if you poll every 10 seconds and the job finishes in 2, you wait unnecessarily.</p>
+<p>Webhook: Strengths and Requirements</p>
+<p>Webhooks are suited for production systems where efficiency and real-time updates matter. They require you to set up a callback endpoint, but eliminate the need for repeated status checks. This pattern scales well for single-system updates and provides near-instant notifications when jobs complete.</p>
+<p>Event-Driven: Unique Advantages</p>
+<p>Event-driven callbacks shine in microservices architectures or when multiple systems need to react to the same event. They decouple the agent from downstream consumers, allowing each team to subscribe and act independently. This approach is highly scalable, resilient, and ideal for complex, multi-team environments.</p>
+<p>Key Insight: The right callback pattern depends on your workflow’s complexity, scale, and integration needs. Choose polling for simplicity, webhooks for real-time single-system updates, and event-driven for multi-system, loosely coupled architectures.</p>
+<div class="quiz"><div class="quiz__head">Knowledge check</div><div class="quiz__body"><div class="quiz__question">An e-commerce company runs 3,000 async agent jobs per hour during peak hours. Each job completion needs to trigger three things simultaneously: update the order record, send a customer email, and deduct from inventory. The three systems are owned by different teams. Which callback pattern is most appropriate?</div><ul class="quiz__options"><li class="quiz__option"><label for="l16q1-0"><input type="radio" name="l16q1" id="l16q1-0" value="0"><span>Polling — simple to implement and each team can poll independently</span></label></li><li class="quiz__option"><label for="l16q1-1"><input type="radio" name="l16q1" id="l16q1-1" value="1"><span>Webhook — send the result to a single endpoint that calls all three systems</span></label></li><li class="quiz__option" data-correct="true"><label for="l16q1-2"><input type="radio" name="l16q1" id="l16q1-2" value="2"><span>Event-Driven — publish a completion event that all three systems subscribe to independently</span></label></li><li class="quiz__option"><label for="l16q1-3"><input type="radio" name="l16q1" id="l16q1-3" value="3"><span>Synchronous — if it needs to trigger three things, it should be synchronous</span></label></li></ul><button type="button" class="quiz__btn">Check answer</button><div class="quiz__feedback" data-note="With three independently-owned systems that all need to react, an event-driven pattern lets each subscribe and act without coupling them together."></div></div></div>
+<div class="quiz"><div class="quiz__head">Knowledge check</div><div class="quiz__body"><div class="quiz__question">After triggering an async agent job, the system immediately receives a unique identifier for that job. What is this called, and why is it important?</div><ul class="quiz__options"><li class="quiz__option"><label for="l16q2-0"><input type="radio" name="l16q2" id="l16q2-0" value="0"><span>A Session Token — it identifies the user who triggered the agent</span></label></li><li class="quiz__option" data-correct="true"><label for="l16q2-1"><input type="radio" name="l16q2" id="l16q2-1" value="1"><span>A Job ID — it serves as a reference to track status and match results back to the original request</span></label></li><li class="quiz__option"><label for="l16q2-2"><input type="radio" name="l16q2" id="l16q2-2" value="2"><span>A Callback URL — it tells the agent where to send results</span></label></li><li class="quiz__option"><label for="l16q2-3"><input type="radio" name="l16q2" id="l16q2-3" value="3"><span>A Queue Position — it shows where in line the job is</span></label></li></ul><button type="button" class="quiz__btn">Check answer</button><div class="quiz__feedback" data-note="That identifier is the Job ID -- it's what lets the system later match an async result back to the original request."></div></div></div>
+</div>
+<aside class="doc-links"><h2>Related UiPath documentation</h2><ul><li><a href="https://docs.uipath.com/integration-service/automation-cloud/latest/user-guide/uipath-http-webhook" target="_blank" rel="noopener">About the HTTP Webhook connector</a></li><li><a href="https://docs.uipath.com/orchestrator/standalone/2023.4/user-guide/about-webhooks" target="_blank" rel="noopener">Orchestrator - Webhooks</a></li></ul></aside>
+<nav class="lesson-nav"><a class="lesson-nav__link lesson-nav__link--prev" href="lesson-15.html"><span class="lesson-nav__dir">&larr; Previous</span><span class="lesson-nav__title">Lesson 15 &middot; Why Synchronous Execution Fails and the Shift to Asynchronous</span></a><a class="lesson-nav__link lesson-nav__link--next" href="lesson-17.html"><span class="lesson-nav__dir">Next &rarr;</span><span class="lesson-nav__title">Lesson 17 &middot; Handling Failures and Monitoring Asynchronous Workflows</span></a></nav>
+
+</div>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>
