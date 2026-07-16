@@ -355,3 +355,144 @@
   if (lesson === '14') { var fourFive = exact('p', '4 5'); if (fourFive) fourFive.remove(); }
   if (lesson === '21') { var threeFour = exact('p', '3 4'); if (threeFour) threeFour.remove(); }
 })();
+
+/* Final structural cleanup for imported headings, paragraphs, and references. */
+(function () {
+  "use strict";
+  var body = document.querySelector('.lesson-body');
+  if (!body || document.documentElement.hasAttribute('data-restored-course-draft')) return;
+  var lesson = (location.pathname.match(/lesson-(\d{2})\.html$/) || [])[1];
+  var urls = {
+    'About Coded Agents': 'https://docs.uipath.com/agents/automation-cloud/latest/user-guide/about-coded-agents',
+    'Complete Coded Agents Guide': 'https://docs.uipath.com/agents/automation-cloud/latest/user-guide/about-coded-agents',
+    'Building and Deploying Coded Agents': 'https://docs.uipath.com/agents/automation-cloud/latest/user-guide/building-and-deploying-coded-agents',
+    'UiPath SDKs & Frameworks': 'https://docs.uipath.com/sdk/other/latest/developer-guide/using-agents-sdks',
+    'UiPath CLI Installation': 'https://docs.uipath.com/uipath-cli/standalone/latest/user-guide/uip-codedagent',
+    'uip rpa pack': 'https://docs.uipath.com/uipath-cli/standalone/latest/user-guide/uip-codedagent',
+    'uip rpa-legacy package': 'https://docs.uipath.com/uipath-cli/standalone/latest/user-guide/uip-codedagent',
+    'About Assets': 'https://docs.uipath.com/orchestrator/automation-cloud/latest/user-guide/about-assets',
+    'Managing Processes': 'https://docs.uipath.com/orchestrator/automation-cloud/latest/user-guide/about-processes',
+    'Creating Agent Escalations with Action Apps': 'https://docs.uipath.com/action-center/automation-cloud/latest/user-guide/quick-start-guide-for-app-actions-and-agents'
+  };
+
+  function exact(selector, value) {
+    return Array.prototype.find.call(body.querySelectorAll(selector), function (el) {
+      return el.textContent.trim() === value;
+    });
+  }
+  function prefix(selector, value) {
+    return Array.prototype.find.call(body.querySelectorAll(selector), function (el) {
+      return el.textContent.trim().indexOf(value) === 0;
+    });
+  }
+  function replaceRange(first, last, html) {
+    if (!first || !last) return;
+    var box = document.createElement('div'); box.innerHTML = html;
+    while (box.firstChild) first.parentNode.insertBefore(box.firstChild, first);
+    var node = first;
+    while (node) { var next = node.nextSibling; node.remove(); if (node === last) break; node = next; }
+  }
+  function linkedHeading(el, label, url) {
+    if (!el) return;
+    el.textContent = '';
+    var a = document.createElement('a');
+    a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+    a.className = 'inline-source-link'; a.textContent = label;
+    el.appendChild(a);
+  }
+
+  if (lesson === '06') {
+    var compareStart = document.querySelector('#compare-the-two-retrieval-methods-for-knowledge-search');
+    var quickReview = exact('p', 'Quick Review: Retrieval Approaches');
+    replaceRange(compareStart, quickReview,
+      '<h2 id="compare-the-two-retrieval-methods-for-knowledge-search">Compare the Two Retrieval Methods for Knowledge Search</h2>' +
+      '<p>Semantic Search is optimized for fast, direct retrieval, while DeepRAG adds reasoning across multiple sources for complex questions.</p>' +
+      '<div class="course-table-wrap"><table class="course-table"><thead><tr><th>Feature</th><th>Semantic Search</th><th>DeepRAG</th></tr></thead><tbody>' +
+      '<tr><th>Purpose</th><td>Retrieves the most relevant indexed content using semantic similarity.</td><td>Retrieves, analyzes, and synthesizes information from multiple sources.</td></tr>' +
+      '<tr><th>Response speed</th><td>Faster for straightforward lookups.</td><td>Typically slower because it performs additional retrieval and reasoning.</td></tr>' +
+      '<tr><th>Complexity handling</th><td>Best for questions answered by a specific document or content chunk.</td><td>Best for multipart questions that require cross-document reasoning.</td></tr>' +
+      '<tr><th>Answer generation</th><td>Returns the most relevant retrieved content.</td><td>Generates a synthesized response from the gathered information.</td></tr>' +
+      '<tr><th>Source references</th><td>Provides the relevant retrieved content from the knowledge base.</td><td>Includes citations and references to the source material used.</td></tr>' +
+      '<tr><th>Best use cases</th><td>FAQs, policy lookups, product information, and direct knowledge retrieval.</td><td>Research questions, policy interpretation, cross-document analysis, and complex reasoning.</td></tr>' +
+      '</tbody></table></div>' +
+      '<h3>Semantic Search example</h3><p>“What is our return policy?” The system retrieves the document sections most closely related to the question, even when the exact wording differs.</p>' +
+      '<h3>DeepRAG example</h3><p>“How do I request parental leave while maintaining health insurance benefits?” DeepRAG combines relevant information from multiple HR policy documents and cites the sources used.</p>' +
+      '<h2>Quick Review: Retrieval Approaches</h2>');
+  }
+
+  if (lesson === '07') {
+    var steps = body.querySelector('ol.steps');
+    if (steps) {
+      steps.className = 'clean-steps';
+      steps.innerHTML = '<li><strong>Receive and validate the request.</strong><span>Confirm the business goal and required inputs.</span></li><li><strong>Interpret intent and context.</strong><span>Apply policies, knowledge, and approved business context.</span></li><li><strong>Retrieve trusted enterprise information.</strong><span>Use approved APIs, connectors, and Knowledge Indexes.</span></li><li><strong>Execute deterministic actions.</strong><span>Invoke UiPath automations or APIs to complete system work.</span></li><li><strong>Escalate sensitive decisions.</strong><span>Route exceptions and high-risk decisions to a human reviewer.</span></li><li><strong>Record and improve.</strong><span>Capture outcomes, traces, and feedback for continuous improvement.</span></li>';
+    }
+  }
+
+  if (lesson === '08') {
+    var classify = document.querySelector('#classify-items-performance-compliance-or-improvement');
+    var congratulations = prefix('p', 'Congratulations on completing the course!');
+    if (classify && congratulations) replaceRange(classify, congratulations.previousElementSibling,
+      '<h2 id="classify-items-performance-compliance-or-improvement">Performance, Compliance, and Improvement</h2>' +
+      '<div class="course-table-wrap"><table class="course-table"><thead><tr><th>Category</th><th>Examples</th></tr></thead><tbody>' +
+      '<tr><th>Performance metrics</th><td>Response accuracy, completion rate, response time, and exception frequency.</td></tr>' +
+      '<tr><th>Compliance mechanisms</th><td>Human escalation for ambiguous cases and an audit trail of agent decisions.</td></tr>' +
+      '<tr><th>Continuous improvement</th><td>Scheduled reviews, refreshed indexes and models, evaluation results, and stakeholder feedback.</td></tr>' +
+      '</tbody></table></div>');
+  }
+
+  if (lesson === '09') {
+    var prereq = document.querySelector('#coded-agents-prerequisites-python-setup-about-coded-agents');
+    if (prereq) prereq.textContent = 'Coded Agent Prerequisites and Python Setup';
+    linkedHeading(document.querySelector('#uipath-sdks-frameworks'), 'UiPath SDKs & Frameworks', urls['UiPath SDKs & Frameworks']);
+    linkedHeading(document.querySelector('#uipath-cli-installation'), 'UiPath CLI Installation', urls['UiPath CLI Installation']);
+    linkedHeading(document.querySelector('#building-and-deploying-coded-agents'), 'Building and Deploying Coded Agents', urls['Building and Deploying Coded Agents']);
+  }
+
+  if (lesson === '10') {
+    var commandQuestion = document.querySelector('#the-uipath-pack-command-which-cli-command-is-used-to-package-agents');
+    if (commandQuestion) { commandQuestion.textContent = 'Which CLI command is used to package agents?'; if (commandQuestion.nextElementSibling) commandQuestion.nextElementSibling.textContent = 'The UiPath pack command bundles the agent code and dependencies into a deployable .nupkg package.'; }
+    var versionQuestion = document.querySelector('#versioning-enables-traceability-why-is-versioning-important');
+    if (versionQuestion) { versionQuestion.textContent = 'Why is versioning important?'; if (versionQuestion.nextElementSibling) versionQuestion.nextElementSibling.textContent = 'Versioning enables traceability, rollback, and compliance across enterprise automation environments.'; }
+    var managing = exact('p', 'Managing Agent Processes within');
+    if (managing && managing.nextElementSibling && managing.nextElementSibling.id === 'orchestrator-folders') { managing.nextElementSibling.textContent = 'Managing Agent Processes within Orchestrator Folders'; managing.remove(); }
+    var lifecycle = document.querySelector('#visualizing-the-full-lifecycle-from-agent');
+    if (lifecycle && lifecycle.nextElementSibling && lifecycle.nextElementSibling.id === 'packaging-to-enterprise-operation') { lifecycle.textContent = 'Visualizing the Full Lifecycle: From Agent Packaging to Enterprise Operation'; lifecycle.nextElementSibling.remove(); }
+  }
+
+  /* Join paragraphs that were split by the source importer. */
+  var changed = true;
+  while (changed) {
+    changed = false;
+    Array.prototype.slice.call(body.querySelectorAll(':scope > p')).forEach(function (p) {
+      var next = p.nextElementSibling;
+      if (!next || next.tagName !== 'P') return;
+      var left = p.textContent.trim(), right = next.textContent.trim();
+      if (left && right && !/[.!?:;\u201d"')\]]$/.test(left) && /^[a-z]/.test(right)) {
+        p.textContent = left + ' ' + right; next.remove(); changed = true;
+      }
+    });
+  }
+
+  /* Promote short imported labels into consistent bold subsection headings. */
+  Array.prototype.slice.call(body.querySelectorAll(':scope > p')).forEach(function (p) {
+    var value = p.textContent.trim();
+    if (!value || value.length > 70 || /[.!?:;]$/.test(value) || !/^[A-Z]/.test(value)) return;
+    if (/^(Source|Sources|Example|Phase|Next|Lesson)\b/i.test(value)) return;
+    if (!p.nextElementSibling || p.querySelector('a')) return;
+    var h = document.createElement('h3'); h.textContent = value; p.replaceWith(h);
+  });
+
+  /* Turn visible source labels into official, clickable UiPath references. */
+  Array.prototype.slice.call(body.querySelectorAll('h2,h3,p,li')).forEach(function (el) {
+    var value = el.textContent.trim();
+    if (!/^(Source|Sources):/i.test(value) || el.querySelector('a')) return;
+    var labels = value.replace(/^(Source|Sources):\s*/i, '').split(/\s*\u00b7\s*/);
+    if (!labels.join('').trim()) { el.remove(); return; }
+    el.textContent = value.indexOf('Sources:') === 0 ? 'Sources: ' : 'Source: ';
+    labels.forEach(function (label, index) {
+      label = label.trim(); if (index) el.appendChild(document.createTextNode(' \u00b7 '));
+      if (urls[label]) { var a = document.createElement('a'); a.href = urls[label]; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.className = 'inline-source-link'; a.textContent = label; el.appendChild(a); }
+      else el.appendChild(document.createTextNode(label));
+    });
+  });
+})();
