@@ -461,3 +461,19 @@ h1.lesson-title{ font-size:2.15rem; margin-bottom:.9em; }
   color:#d63b13; font-weight:700; text-decoration:underline;
   text-underline-offset:3px;
 }
+.lesson-body > h2,.lesson-body > h3{ font-weight:800; }
+.clean-steps{
+  counter-reset:course-step; list-style:none; padding:0; margin:1.5rem 0 2rem;
+  display:grid; gap:.8rem;
+}
+.clean-steps li{
+  counter-increment:course-step; position:relative; padding:1rem 1rem 1rem 4rem;
+  border:1px solid #d8dee6; border-radius:10px; background:#fff; line-height:1.55;
+}
+.clean-steps li::before{
+  content:counter(course-step); position:absolute; left:1rem; top:.85rem;
+  width:2rem; height:2rem; display:grid; place-items:center; border-radius:50%;
+  background:#ff4f1f; color:#fff; font-weight:800;
+}
+.clean-steps strong{ display:block; color:#17212b; font-weight:800; margin-bottom:.2rem; }
+.clean-steps span{ display:block; color:#475569; }
