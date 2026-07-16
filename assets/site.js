@@ -181,3 +181,24 @@
     setTimeout(function () { btn.textContent = original; }, 1600);
   }
 })();
+
+/* Estimated completion time for each lesson on the course overview. */
+(function () {
+  "use strict";
+  var durations = [
+    "45 min", "45 min", "1 hr", "1 hr", "1 hr", "1 hr 30 min",
+    "1 hr", "1 hr", "1 hr 30 min", "1 hr", "1 hr 30 min", "1 hr",
+    "1 hr", "1 hr", "45 min", "1 hr", "1 hr", "1 hr", "45 min",
+    "1 hr", "1 hr", "1 hr", "45 min"
+  ];
+
+  document.querySelectorAll('.lesson-card').forEach(function (card, index) {
+    var meta = card.querySelector('.lesson-card__meta');
+    if (!meta || !durations[index] || meta.querySelector('.lesson-duration')) return;
+    var badge = document.createElement('span');
+    badge.className = 'lesson-duration';
+    badge.setAttribute('aria-label', 'Estimated duration ' + durations[index]);
+    badge.textContent = '\u23F1 ' + durations[index];
+    meta.appendChild(badge);
+  });
+})();
