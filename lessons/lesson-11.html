@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/style.css?v=20260716-6">
+<link rel="stylesheet" href="../assets/style.css?v=20260716-8">
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -85,34 +85,46 @@
 <h3 id="agent-traces">Agent Traces</h3>
 <h3 id="best-practices-for-building-agents">Best Practices for Building Agents</h3>
 <h2 id="uipath-sdks-and-supported-frameworks">UiPath SDKs and Supported Frameworks</h2>
-<p>UiPath offers a diverse ecosystem of SDKs and frameworks to support coded agent development. Whether you’re building in Python, leveraging graph-based orchestration with LangChain or LlamaIndex, or developing coded apps in TypeScript, there’s a toolkit to match your needs.</p>
-<p>This flexibility empowers developers to choose the best-fit technology for their use case, while ensuring seamless integration with UiPath’s enterprise automation platform.</p>
-<h2 id="sdks-and-frameworks-for-coded-agent-development">SDKs and Frameworks for Coded Agent Development</h2>
-<p>Explore the leading SDKs and frameworks available for developing coded agents. Each option offers unique capabilities, integration points, and ideal use cases, enabling</p>
-<p>developers to choose the best fit for their automation and orchestration needs.</p>
-<div class="chip-row"><span class="chip">Python SDK</span><span class="chip">LangChain &amp; LangGraph</span><span class="chip">LlamaIndex</span><span class="chip">MCP SDK</span><span class="chip">Type</span></div>
-<p>The Python SDK provides a robust foundation for creating, packaging, and deploying coded agents to the UiPath Cloud Platform. It also provides programmatic access to UiPath Platform resources such as processes, assets, buckets, and jobs. Using the uipath pack and uipath publish CLI commands, developers package agent code into .nupkg format and deploy to Orchestrator. This approach supports rapid iteration and efficient deployment of coded agents in enterprise environments, governed by the same principles as standard UiPath processes.</p>
-<h3 id="sources-2">Sources:</h3>
-<h3 id="agents-sdks">Agents SDKs</h3>
-<h3 id="building-and-deploying-coded-agents">Building and Deploying Coded Agents</h3>
-<div class="chip-row"><span class="chip">Python SDK</span><span class="chip">LangChain &amp; LangGraph</span><span class="chip">LlamaIndex</span><span class="chip">MCP SDK</span></div>
-<p>LangGraph offers native interrupt patterns, allowing for human intervention in the agent's execution. The Python with LangGraph SDK enables developers to build and deploy LangGraph agents with programmatic access to UiPath Platform services and human-in-the-loop interactions via Action Center. Integration with UiPath SDKs ensures that agents built with LangGraph benefit from enterprise-grade deployment, monitoring, and governance features. Developers can define complex workflows using LangGraph's state-based graph architecture while leveraging UiPath's orchestration and compliance capabilities.</p>
-<h3 id="sources-3">Sources:</h3>
-<h3 id="agents-sdks-2">Agents SDKs</h3>
-<h2 id="type">TYPE</h2>
-<h2 id="about-coded-agents">About Coded Agents</h2>
-<div class="chip-row"><span class="chip">Python SDK</span><span class="chip">LangChain &amp; LangGraph</span><span class="chip">LlamaIndex</span><span class="chip">MCP SDK</span><span class="chip">Type</span></div>
-<p>The LlamaIndex SDK supports development of LlamaIndex agents integrated with UiPath Cloud Platform services, including Action Center for human-in-the-loop scenarios. With this integration, developers can interact with UiPath Cloud services from within their LlamaIndexbased agents, and leverage Action Center integration to incorporate human-in-the-loop (HITL) workflows. LlamaIndex is suited for agents requiring advanced information retrieval, compositional reasoning, and knowledge-grounded decision-making. Like other SDKs, LlamaIndex agents deployed on UiPath adhere to the same governance, monitoring, and audit principles as standard processes.</p>
-<h3 id="sources-4">Sources:</h3>
-<h3 id="agents-sdks-3">Agents SDKs</h3>
-<p>July 2025 Release Notes</p>
-<div class="chip-row"><span class="chip">Python SDK</span><span class="chip">LangChain &amp; LangGraph</span><span class="chip">LlamaIndex</span><span class="chip">MCP SDK</span></div>
-<p>The Model Context Protocol (MCP) provides a standardized protocol for communicating and sharing contextual data between large language models (LLMs), agents, and applications. The MCP SDK is designed for setting up and running an MCP Server. MCP integration ensures that agents can access both UiPath-hosted and external MCP endpoints seamlessly, allowing agents to call out to various MCP servers that expose functions, data, or automation capabilities as reusable tools. MCP enables agents to discover and invoke capabilities—such as RPA workflows, external APIs, and domain-specific logic—without requiring custom integrations. This supports compliance and consistency in agentic workflows across enterprise systems.</p>
-<h3 id="sources-5">Sources:</h3>
-<h2 id="type-2">TYPE</h2>
-<h2 id="mcp-servers-about-mcp-servers-orchestrator">MCP Servers About MCP Servers (Orchestrator)</h2>
-<div class="chip-row"><span class="chip">LangChain &amp;</span><span class="chip">Python SDK</span><span class="chip">LangGraph</span><span class="chip">LlamaIndex</span><span class="chip">MCP SDK</span></div>
-<p>UiPath Coded Apps allows users to build and deploy browser-based web applications (React, Vue, Angular, etc.) within UiPath. Coded Apps are built through direct code development within a developer's preferred Integrated Development Environment (IDE), providing developers with complete control over app logic, behavior, and integration with external systems. Using a UiPath CLI, you can package your app code and deploy it to Orchestrator as a standard .nupkg package in a tenant feed of your choice. You can also build custom interfaces and applications that interact with conversational agents programmatically using the public UiPath TypeScript SDK. The TypeScript SDK expands automation reach into web and modern frontend environments, enabling cross-platform solutions and broader enterprise integration. Sources: About Coded Apps UiPath TypeScript SDK</p>
+<p>Explore each SDK or framework individually. Select a tab to view its purpose, enterprise use, and official UiPath documentation without mixing content from the other options.</p>
+<div class="tabs framework-tabs">
+  <div class="tabs__nav" role="tablist" aria-label="UiPath SDKs and supported frameworks">
+    <button type="button" class="tabs__btn is-active" role="tab" aria-selected="true">Python SDK</button>
+    <button type="button" class="tabs__btn" role="tab" aria-selected="false">LangChain &amp; LangGraph</button>
+    <button type="button" class="tabs__btn" role="tab" aria-selected="false">LlamaIndex</button>
+    <button type="button" class="tabs__btn" role="tab" aria-selected="false">MCP SDK</button>
+    <button type="button" class="tabs__btn" role="tab" aria-selected="false">TypeScript SDK</button>
+  </div>
+  <section class="tabs__panel is-active" role="tabpanel">
+    <h3>Python SDK</h3>
+    <p>The Python SDK provides a robust foundation for creating, packaging, and deploying coded agents to the UiPath Cloud Platform. It also provides programmatic access to UiPath Platform resources such as processes, assets, buckets, and jobs.</p>
+    <p>Using UiPath packaging and publishing commands, developers package agent code into <code>.nupkg</code> format and deploy it to Orchestrator. This approach supports rapid iteration and efficient enterprise deployment under the same governance principles as standard UiPath processes.</p>
+    <p class="tab-source"><strong>Sources:</strong> <a class="inline-source-link" href="https://docs.uipath.com/sdk/other/latest/developer-guide/using-agents-sdks" target="_blank" rel="noopener noreferrer">Agents SDKs</a> · <a class="inline-source-link" href="https://docs.uipath.com/agents/automation-cloud/latest/user-guide/building-and-deploying-coded-agents" target="_blank" rel="noopener noreferrer">Building and Deploying Coded Agents</a></p>
+  </section>
+  <section class="tabs__panel" role="tabpanel">
+    <h3>LangChain &amp; LangGraph</h3>
+    <p>LangGraph offers native interrupt patterns that allow human intervention during agent execution. The Python with LangGraph SDK enables developers to build and deploy LangGraph agents with programmatic access to UiPath Platform services and human-in-the-loop interactions through Action Center.</p>
+    <p>Developers can define complex workflows with LangGraph’s state-based graph architecture while using UiPath enterprise deployment, monitoring, orchestration, governance, and compliance capabilities.</p>
+    <p class="tab-source"><strong>Sources:</strong> <a class="inline-source-link" href="https://docs.uipath.com/sdk/other/latest/developer-guide/using-agents-sdks" target="_blank" rel="noopener noreferrer">Agents SDKs</a> · <a class="inline-source-link" href="https://docs.uipath.com/agents/automation-cloud/latest/user-guide/about-coded-agents" target="_blank" rel="noopener noreferrer">About Coded Agents</a></p>
+  </section>
+  <section class="tabs__panel" role="tabpanel">
+    <h3>LlamaIndex</h3>
+    <p>The LlamaIndex SDK supports LlamaIndex agents that interact with UiPath Cloud Platform services and Action Center. It is well suited to advanced information retrieval, compositional reasoning, and knowledge-grounded decision-making.</p>
+    <p>LlamaIndex agents deployed through UiPath follow the same enterprise governance, monitoring, and audit principles as other managed processes.</p>
+    <p class="tab-source"><strong>Sources:</strong> <a class="inline-source-link" href="https://docs.uipath.com/sdk/other/latest/developer-guide/using-agents-sdks" target="_blank" rel="noopener noreferrer">Agents SDKs</a> · <a class="inline-source-link" href="https://docs.uipath.com/agents/automation-cloud/latest/user-guide/building-and-deploying-coded-agents" target="_blank" rel="noopener noreferrer">Building and Deploying Coded Agents</a></p>
+  </section>
+  <section class="tabs__panel" role="tabpanel">
+    <h3>MCP SDK</h3>
+    <p>The Model Context Protocol provides a standard way for models and agents to discover and invoke tools. The MCP SDK provides the foundation for setting up and running an MCP Server so reusable functions, data, APIs, and automation capabilities can be exposed in a consistent format.</p>
+    <p>UiPath can host or connect MCP Servers as part of governed agentic workflows, allowing agents to use approved enterprise capabilities without custom point-to-point integrations.</p>
+    <p class="tab-source"><strong>Sources:</strong> <a class="inline-source-link" href="https://docs.uipath.com/sdk/other/latest/developer-guide/using-agents-sdks" target="_blank" rel="noopener noreferrer">Agents SDKs</a> · <a class="inline-source-link" href="https://docs.uipath.com/orchestrator/automation-cloud/latest/user-guide/about-mcp-servers" target="_blank" rel="noopener noreferrer">About MCP Servers</a></p>
+  </section>
+  <section class="tabs__panel" role="tabpanel">
+    <h3>TypeScript SDK</h3>
+    <p>The UiPath TypeScript SDK enables developers to create, package, and deploy coded apps. These browser-based applications can provide custom user interfaces and integrate UiPath automation capabilities with modern web experiences.</p>
+    <p>Use the TypeScript SDK when the solution needs a code-first application interface that works alongside agents, automations, Action Center, or external enterprise systems.</p>
+    <p class="tab-source"><strong>Sources:</strong> <a class="inline-source-link" href="https://docs.uipath.com/sdk/other/latest/developer-guide/uipath-sdks" target="_blank" rel="noopener noreferrer">UiPath SDKs</a> · <a class="inline-source-link" href="https://docs.uipath.com/apps/automation-cloud/latest/release-notes/may-2026" target="_blank" rel="noopener noreferrer">Coded Apps and TypeScript SDK</a></p>
+  </section>
+</div>
 <div class="quiz"><div class="quiz__head">Knowledge check</div><div class="quiz__body"><div class="quiz__question">Which SDK would you choose for developing agents with integrated knowledge retrieval and Action Center HITL support?</div><ul class="quiz__options"><li class="quiz__option"><label for="l11q2-0"><input type="radio" name="l11q2" id="l11q2-0" value="0"><span>LlamaIndex</span></label></li><li class="quiz__option"><label for="l11q2-1"><input type="radio" name="l11q2" id="l11q2-1" value="1"><span>TYPE</span></label></li><li class="quiz__option" data-correct="true"><label for="l11q2-2"><input type="radio" name="l11q2" id="l11q2-2" value="2"><span>Python SDK</span></label></li><li class="quiz__option"><label for="l11q2-3"><input type="radio" name="l11q2" id="l11q2-3" value="3"><span>TypeScript SDK</span></label></li><li class="quiz__option"><label for="l11q2-4"><input type="radio" name="l11q2" id="l11q2-4" value="4"><span>MCP SDK</span></label></li></ul><button type="button" class="quiz__btn">Check answer</button><div class="quiz__feedback" data-note="The Python SDK is UiPath's native, full-featured path for coded agents that need both retrieval and Action Center HITL support."></div></div></div>
 <h2 id="lifecycle-of-a-uipath-coded-agent">Lifecycle of a UiPath Coded Agent</h2>
 <p>This timeline outlines the typical lifecycle of a UiPath coded agent, from initial design to full-scale enterprise operation. Each phase represents a critical step in ensuring the agent is robust, secure, and integrated within the broader automation ecosystem.</p>
@@ -157,6 +169,6 @@
 </div>
 </main>
 </div>
-<script src="../assets/site.js?v=20260716-6"></script>
+<script src="../assets/site.js?v=20260716-8"></script>
 </body>
 </html>
