@@ -443,3 +443,21 @@ h1.lesson-title{ font-size:2.15rem; margin-bottom:.9em; }
   .edit-bar{ right:.7em; bottom:.7em; }
   .edit-bar__btn{ padding:.55em .9em; font-size:.76rem; }
 }
+
+/* Course content tables and official inline references. */
+.course-table-wrap{
+  margin:1.25rem 0 2rem; overflow-x:auto; border:1px solid #d8dee6;
+  border-radius:10px; background:#fff;
+}
+.course-table{ width:100%; border-collapse:collapse; min-width:620px; }
+.course-table th,.course-table td{
+  padding:.9rem 1rem; border-bottom:1px solid #e7ebf0;
+  text-align:left; vertical-align:top; line-height:1.55;
+}
+.course-table thead th{ background:#17212b; color:#fff; font-weight:800; }
+.course-table tbody th{ color:#17212b; background:#f7f9fb; font-weight:800; }
+.course-table tr:last-child th,.course-table tr:last-child td{ border-bottom:0; }
+.inline-source-link{
+  color:#d63b13; font-weight:700; text-decoration:underline;
+  text-underline-offset:3px;
+}
