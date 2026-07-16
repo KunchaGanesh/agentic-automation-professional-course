@@ -186,10 +186,10 @@
 (function () {
   "use strict";
   var durations = [
-    "45 min", "45 min", "1 hr", "1 hr", "1 hr", "1 hr 30 min",
-    "1 hr", "1 hr", "1 hr 30 min", "1 hr", "1 hr 30 min", "1 hr",
-    "1 hr", "1 hr", "45 min", "1 hr", "1 hr", "1 hr", "45 min",
-    "1 hr", "1 hr", "1 hr", "45 min"
+    "30 min", "30 min", "45 min", "45 min", "45 min", "1 hr",
+    "45 min", "45 min", "1 hr", "45 min", "30 min", "1 hr",
+    "30 min", "45 min", "30 min", "45 min", "30 min", "45 min",
+    "30 min", "30 min", "1 hr", "45 min", "30 min"
   ];
 
   document.querySelectorAll('.lesson-card').forEach(function (card, index) {
