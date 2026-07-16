@@ -477,5 +477,7 @@ h1.lesson-title{ font-size:2.15rem; margin-bottom:.9em; }
 }
 .clean-steps strong{ display:block; color:#17212b; font-weight:800; margin-bottom:.2rem; }
 .clean-steps span{ display:block; color:#475569; }
-.process-tabs .tabs__panel h3{ margin-top:0; font-weight:900; color:#17212b; }
-.process-tabs .tab-source{ margin-top:1.25rem; padding-top:.85rem; border-top:1px solid #e7ebf0; }
+.process-tabs .tabs__panel h3,
+.framework-tabs .tabs__panel h3{ margin-top:0; font-weight:900; color:#17212b; }
+.process-tabs .tab-source,
+.framework-tabs .tab-source{ margin-top:1.25rem; padding-top:.85rem; border-top:1px solid #e7ebf0; }
