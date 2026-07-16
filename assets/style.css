@@ -310,6 +310,37 @@ h1.lesson-title{ font-size:2.15rem; margin-bottom:.9em; }
 .hero__figure figcaption{ margin-top:.65em; color:var(--ink-soft); font-size:.76rem; line-height:1.45; }
 .hero__figure figcaption a{ display:inline; border:0; color:var(--orange-dark); font-weight:700; }
 
+.course-objectives{
+  max-width:var(--content-max); margin:2em auto 0; padding:1.6em;
+  background:var(--paper-raised); border:1px solid var(--line);
+  border-left:5px solid var(--orange); border-radius:var(--radius-m);
+  box-shadow:var(--shadow-card);
+}
+.course-objectives__heading{ display:flex; align-items:flex-start; gap:1em; margin-bottom:1.2em; }
+.course-objectives__icon{
+  display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;
+  width:2.5em; height:2.5em; border-radius:50%; background:var(--orange);
+  color:#fff; font-weight:900;
+}
+.course-objectives__eyebrow{
+  color:var(--orange-dark); font-size:.72rem; font-weight:900;
+  letter-spacing:.11em; text-transform:uppercase; margin-bottom:.25em;
+}
+.course-objectives h2{ font-size:1.35rem; margin:0 0 .3em; }
+.course-objectives p{ color:var(--ink-soft); margin:0; }
+.course-objectives__grid{
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.85em 1.4em;
+  list-style:none; padding:0; margin:0;
+}
+.course-objectives__grid li{
+  position:relative; margin:0; padding-left:1.45em; color:var(--ink);
+  font-size:.94rem; line-height:1.55;
+}
+.course-objectives__grid li::before{
+  content:'\2713'; position:absolute; left:0; top:.05em;
+  color:var(--orange); font-weight:900;
+}
+
 .official-sources{ max-width:var(--content-max); margin:2em auto 0; padding:1.4em; background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); }
 .official-sources__head{ display:flex; align-items:center; gap:.75em; margin-bottom:1em; }
 .official-sources__icon{ display:inline-flex; align-items:center; justify-content:center; width:2.25em; height:2.25em; border-radius:6px; background:var(--orange-tint); color:var(--orange-dark); font-weight:900; }
@@ -335,7 +366,12 @@ h1.lesson-title{ font-size:2.15rem; margin-bottom:.9em; }
   font-weight:700; font-size:1.05rem;
 }
 .lesson-card__title{ font-family:'Merriweather',serif; font-weight:700; font-size:1.06rem; color:var(--ink); margin-bottom:.2em; }
-.lesson-card__meta{ font-size:.78rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.06em; }
+.lesson-card__meta{ display:flex; flex-wrap:wrap; align-items:center; gap:.55em; font-size:.78rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.06em; }
+.lesson-duration{
+  display:inline-flex; align-items:center; padding:.25em .6em; border-radius:999px;
+  background:var(--orange-tint); border:1px solid #F8C4B5; color:var(--orange-dark);
+  font-weight:900; letter-spacing:0; text-transform:none; white-space:nowrap;
+}
 
 @media (max-width:920px){
   .topbar{ display:flex; }
@@ -348,6 +384,7 @@ h1.lesson-title{ font-size:2.15rem; margin-bottom:.9em; }
   .hero{ padding:3em 1.3em 3em; }
   .hero h1{ font-size:1.9rem; }
   .hero__inner{ grid-template-columns:1fr; }
+  .course-objectives__grid{ grid-template-columns:1fr; }
   .official-sources__grid{ grid-template-columns:1fr; }
   .module-list{ padding:2.5em 1.3em 4em; }
   .backdrop{ display:none; position:fixed; inset:0; background:rgba(10,10,16,.5); z-index:70; }
