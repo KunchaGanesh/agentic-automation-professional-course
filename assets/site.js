@@ -101,13 +101,21 @@
   // draft cannot replace the approved wording or remove its source links.
   var storageKey = 'editv2:' + location.pathname;
 
-  // Restore any previously saved edit for this page
+  // Restore the current draft normally. The explicit recovery query is used
+  // only to recover reviewed edits saved before the course was republished.
   try {
-    var saved = localStorage.getItem(storageKey);
+    var recoverLegacy = new URLSearchParams(location.search).get('restoreDraft') === 'legacy';
+    var currentSaved = localStorage.getItem(storageKey);
+    var legacySaved = recoverLegacy ? localStorage.getItem('editv1:' + location.pathname) : null;
+    var saved = legacySaved || currentSaved;
     if (saved) {
       var data = JSON.parse(saved);
       if (data.body) editable.innerHTML = data.body;
       if (data.title && titleEl) titleEl.textContent = data.title;
+      document.documentElement.setAttribute(
+        'data-restored-course-draft',
+        legacySaved ? 'legacy' : 'current'
+      );
     }
   } catch (e) { /* ignore corrupted storage */ }
 
