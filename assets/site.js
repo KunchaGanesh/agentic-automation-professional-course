@@ -457,6 +457,42 @@
     if (managing && managing.nextElementSibling && managing.nextElementSibling.id === 'orchestrator-folders') { managing.nextElementSibling.textContent = 'Managing Agent Processes within Orchestrator Folders'; managing.remove(); }
     var lifecycle = document.querySelector('#visualizing-the-full-lifecycle-from-agent');
     if (lifecycle && lifecycle.nextElementSibling && lifecycle.nextElementSibling.id === 'packaging-to-enterprise-operation') { lifecycle.textContent = 'Visualizing the Full Lifecycle: From Agent Packaging to Enterprise Operation'; lifecycle.nextElementSibling.remove(); }
+
+    var operationsStart = document.querySelector('#process-management-and-governance-in-orchestrator');
+    var operationsEnd = document.querySelector('#integrating-coded-agents-with-uipath-assets-buckets-and-processes');
+    if (operationsStart && operationsEnd) {
+      replaceRange(operationsStart, operationsEnd.previousElementSibling,
+        '<h2 id="process-management-and-governance-in-orchestrator">Process Management and Governance in Orchestrator</h2>' +
+        '<p>Select each tab to review one operational area at a time.</p>' +
+        '<div class="tabs process-tabs">' +
+          '<div class="tabs__nav" role="tablist" aria-label="Orchestrator process management topics">' +
+            '<button type="button" class="tabs__btn is-active" role="tab" aria-selected="true">Process Creation</button>' +
+            '<button type="button" class="tabs__btn" role="tab" aria-selected="false">Folder</button>' +
+            '<button type="button" class="tabs__btn" role="tab" aria-selected="false">Scheduling &amp; Monitoring</button>' +
+            '<button type="button" class="tabs__btn" role="tab" aria-selected="false">Governance</button>' +
+            '<button type="button" class="tabs__btn" role="tab" aria-selected="false">Triggers</button>' +
+            '<button type="button" class="tabs__btn" role="tab" aria-selected="false">Alerts</button>' +
+          '</div>' +
+          '<section class="tabs__panel is-active" role="tabpanel"><h3>Process Creation</h3><p>Navigate to <strong>Automations &gt; Processes</strong> in the folder where you want to deploy, then select <strong>Add</strong>. Choose the agent package from the <strong>Package Source Name</strong> list; the latest package version is selected automatically.</p><p>Before saving, configure runtime argument values, job priority, display name, description, tags, and the applicable retention settings.</p><p class="tab-source">Source: <a class="inline-source-link" href="https://docs.uipath.com/orchestrator/automation-cloud/latest/user-guide/managing-processes" target="_blank" rel="noopener noreferrer">Managing Processes</a></p></section>' +
+          '<section class="tabs__panel" role="tabpanel"><h3>Folder</h3><p>Folders scope Orchestrator resources. Only resources available in the active folder are visible. Assign folder roles with the required folder-level permissions to manage access.</p><p>A folder hierarchy can contain up to seven levels. Access granted on a parent folder is inherited by its subfolders.</p><p class="tab-source">Source: <a class="inline-source-link" href="https://docs.uipath.com/orchestrator/automation-cloud/latest/user-guide/folders" target="_blank" rel="noopener noreferrer">Folders</a></p></section>' +
+          '<section class="tabs__panel" role="tabpanel"><h3>Scheduling &amp; Monitoring</h3><p>Schedule agent execution with an appropriate time, queue, event, or API trigger. Use calendars when executions must avoid non-working days.</p><p>Monitor jobs and agent runs for status, errors, duration, and consumption. Review job details and traces when investigating failures or unexpected behavior.</p><p class="tab-source">Source: <a class="inline-source-link" href="https://docs.uipath.com/orchestrator/automation-cloud/latest/user-guide/monitoring-agents" target="_blank" rel="noopener noreferrer">Monitoring Agents</a></p></section>' +
+          '<section class="tabs__panel" role="tabpanel"><h3>Governance</h3><p>Apply least-privilege folder roles, approved package versions, controlled configuration, auditability, and retention requirements. Separate development, testing, and production resources where appropriate.</p><p>Keep secrets in approved UiPath assets or environment configuration instead of embedding them in agent code.</p><p class="tab-source">Source: <a class="inline-source-link" href="https://docs.uipath.com/agents/automation-cloud/latest/user-guide/about-coded-agents" target="_blank" rel="noopener noreferrer">About Coded Agents</a></p></section>' +
+          '<section class="tabs__panel" role="tabpanel"><h3>Triggers</h3><p>Use time triggers for scheduled execution, queue triggers for new queue work, event triggers for integrated application events, and API triggers for external systems.</p><p>Creating a trigger requires folder-level permissions for Triggers and access to the associated process.</p><p class="tab-source">Source: <a class="inline-source-link" href="https://docs.uipath.com/orchestrator/automation-cloud/latest/user-guide/managing-triggers" target="_blank" rel="noopener noreferrer">Managing Triggers</a></p></section>' +
+          '<section class="tabs__panel" role="tabpanel"><h3>Alerts</h3><p>Subscribe to the relevant Orchestrator notifications for job faults, trigger problems, and other operational events. Alert visibility depends on both tenant-level alert access and the required folder-level resource permissions.</p><p>Use alerts with monitoring and traces so the support team can identify the affected process, folder, and execution quickly.</p><p class="tab-source">Source: <a class="inline-source-link" href="https://docs.uipath.com/orchestrator/automation-cloud/latest/user-guide/notifications" target="_blank" rel="noopener noreferrer">Notifications</a></p></section>' +
+        '</div>');
+
+      var processTabs = body.querySelector('.process-tabs');
+      var tabButtons = processTabs.querySelectorAll('.tabs__btn');
+      var tabPanels = processTabs.querySelectorAll('.tabs__panel');
+      tabButtons.forEach(function (button, index) {
+        button.addEventListener('click', function () {
+          tabButtons.forEach(function (item) { item.classList.remove('is-active'); item.setAttribute('aria-selected', 'false'); });
+          tabPanels.forEach(function (panel) { panel.classList.remove('is-active'); });
+          button.classList.add('is-active'); button.setAttribute('aria-selected', 'true');
+          if (tabPanels[index]) tabPanels[index].classList.add('is-active');
+        });
+      });
+    }
   }
 
   /* Join paragraphs that were split by the source importer. */
