@@ -420,3 +420,153 @@
     });
   });
 })();
+
+
+/* Course feedback update - 2026-07-30 */
+(function () {
+  "use strict";
+  var match = location.pathname.match(/lesson-(\d{2})\.html$/);
+  var lesson = match ? match[1] : "";
+  var removed = ["09", "10", "11"];
+
+  if (removed.indexOf(lesson) >= 0) {
+    location.replace("../index.html#courseModules");
+    return;
+  }
+
+  document.querySelectorAll('a[href]').forEach(function (link) {
+    var href = link.getAttribute('href') || '';
+    if (/lesson-(09|10|11)\.html/.test(href)) {
+      var item = link.closest('.lesson-card') || link.closest('.rail__item');
+      if (item) item.remove();
+    }
+  });
+
+  document.querySelectorAll('.lesson-nav a[href]').forEach(function (link) {
+    var href = link.getAttribute('href') || '';
+    if (!/lesson-(09|10|11)\.html/.test(href)) return;
+    if (lesson === '08') link.setAttribute('href', 'lesson-12.html');
+    if (lesson === '12') link.setAttribute('href', 'lesson-08.html');
+  });
+
+  var style = document.createElement('style');
+  style.textContent =
+    '.feedback-figure{margin:1.7rem 0;padding:1rem;background:#fff;border:1px solid #dfe5e8;border-radius:14px;box-shadow:0 8px 24px rgba(24,32,39,.08)}' +
+    '.feedback-figure img{display:block;width:100%;height:auto;border-radius:9px}' +
+    '.feedback-figure figcaption{margin-top:.8rem;color:#52616b;font-size:.92rem}' +
+    '.feedback-figure a,.feedback-source{color:#c63b13;font-weight:700}' +
+    '.feedback-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin:1.25rem 0 2rem}' +
+    '.feedback-card{padding:1.1rem;border:1px solid #dfe5e8;border-radius:12px;background:#fff}' +
+    '.feedback-card strong{display:block;margin-bottom:.45rem;color:#182027;font-size:1.08rem}' +
+    '.cg-best-practices{margin:2rem 0;padding:1.4rem;border-left:7px solid #00a88e;background:#dff6f1;border-radius:12px}' +
+    '.cg-best-practices h2,.cg-best-practices h3{color:#006b5b}' +
+    '.feedback-flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:.6rem;margin:1.25rem 0 2rem}' +
+    '.feedback-node{flex:1 1 145px;padding:1rem;border-radius:12px;background:#fff;border:2px solid #cfd8dc;text-align:center}' +
+    '.feedback-node.decision{background:#fff3e8;border-color:#fa4616}' +
+    '.feedback-node.result{background:#e8f4ff;border-color:#2874a6}' +
+    '.feedback-arrow{align-self:center;color:#fa4616;font-weight:800;font-size:1.35rem}' +
+    '.feedback-callout{margin:1rem 0 1.5rem;padding:1rem 1.1rem;background:#f3f6f7;border-left:4px solid #fa4616;border-radius:8px}' +
+    '@media(max-width:700px){.feedback-arrow{display:none}}';
+  document.head.appendChild(style);
+
+  function heading(text) {
+    return Array.prototype.find.call(document.querySelectorAll('.lesson-body h2,.lesson-body h3'), function (el) {
+      return el.textContent.toLowerCase().indexOf(text.toLowerCase()) >= 0;
+    });
+  }
+  function after(node, html) {
+    if (!node) return;
+    var box = document.createElement('div');
+    box.innerHTML = html;
+    while (box.lastChild) node.parentNode.insertBefore(box.lastChild, node.nextSibling);
+  }
+
+  if (lesson === '04') {
+    var cg = heading('How Context Grounding Works') || heading('Context Grounding');
+    if (cg && !document.querySelector('[data-feedback="cg-architecture"]')) {
+      after(cg,
+        '<figure class="feedback-figure" data-feedback="cg-architecture">' +
+        '<img loading="lazy" src="https://dev-assets.cms.uipath.com/assets/images/automation-cloud/automation-cloud-context-grounding-component-architecture-image-455462-f4f3bbcb-1c579487.webp" alt="UiPath Context Grounding component architecture">' +
+        '<figcaption>UiPath Context Grounding architecture: ingestion and indexing, retrieval, RAG, and DeepRAG. Source: <a target="_blank" rel="noopener noreferrer" href="https://docs.uipath.com/automation-cloud/automation-cloud/latest/admin-guide/about-context-grounding">About Context Grounding</a>.</figcaption></figure>');
+    }
+
+    var best = heading('Best Practices');
+    if (best && !best.closest('.cg-best-practices')) {
+      var panel = document.createElement('section');
+      panel.className = 'cg-best-practices';
+      best.parentNode.insertBefore(panel, best);
+      var node = best;
+      while (node) {
+        var next = node.nextSibling;
+        if (node !== best && node.nodeType === 1 && node.tagName === 'H2') break;
+        panel.appendChild(node);
+        node = next;
+      }
+      panel.insertAdjacentHTML('beforeend', '<p><strong>Official guidance:</strong> Use descriptive, versioned index names; select Basic ingestion for text-first files and Advanced ingestion for scans, tables, images, and infographics; and continuously evaluate retrieval quality.</p><p><a class="feedback-source" target="_blank" rel="noopener noreferrer" href="https://docs.uipath.com/agents/automation-cloud/latest/user-guide/best-practices-for-context-engineering">UiPath Context Grounding best practices</a></p>');
+    }
+  }
+
+  if (lesson === '05' || lesson === '06') {
+    var ingestion = heading('Ingestion') || heading('DeepRAG') || document.querySelector('.lesson-body h2');
+    if (ingestion && !document.querySelector('[data-feedback="cg-modes"]')) {
+      after(ingestion,
+        '<section data-feedback="cg-modes"><div class="feedback-grid">' +
+        '<article class="feedback-card"><strong>🖼️ Advanced Ingestion</strong><p>Use it for multimodal documents containing scans, tables, images, or infographics. UiPath processes the visual and textual content together.</p></article>' +
+        '<article class="feedback-card"><strong>📚 DeepRAG</strong><p>Use it for complex questions requiring planning, evidence gathering across documents, synthesis, and detailed citations.</p></article>' +
+        '<article class="feedback-card"><strong>🔎 Semantic Search</strong><p>Use it for fast fact lookup when a relevant answer is likely contained in a specific indexed passage.</p></article>' +
+        '</div><p>Official sources: <a class="feedback-source" target="_blank" rel="noopener noreferrer" href="https://docs.uipath.com/automation-cloud/automation-cloud/latest/admin-guide/about-context-grounding">Context Grounding and multimodal ingestion</a> · <a class="feedback-source" target="_blank" rel="noopener noreferrer" href="https://docs.uipath.com/automation-cloud/automation-cloud/latest/admin-guide/using-deeprag">Using DeepRAG</a></p></section>');
+    }
+  }
+
+  if (lesson === '20') {
+    var route = heading('Multi-Level Approval') || heading('Data-Driven Routing') || document.querySelector('.lesson-body h2');
+    if (route && !document.querySelector('[data-feedback="routing-visual"]')) {
+      after(route,
+        '<section data-feedback="routing-visual"><p class="feedback-callout"><strong>Example context:</strong> A purchase request arrives with connected process data: <code>PO_Amount</code>, <code>Department</code>, <code>Risk_Level</code>, and <code>Requester</code>. The workflow uses these values to select the approval route.</p>' +
+        '<div class="feedback-flow" aria-label="Purchase request approval routing">' +
+        '<div class="feedback-node"><strong>Input data</strong><br>Amount + department + risk</div><div class="feedback-arrow">→</div>' +
+        '<div class="feedback-node decision"><strong>≤ $5K</strong><br>Manager approval</div><div class="feedback-arrow">→</div>' +
+        '<div class="feedback-node decision"><strong>$5K–$25K</strong><br>Department head</div><div class="feedback-arrow">→</div>' +
+        '<div class="feedback-node result"><strong>&gt; $25K or high risk</strong><br>Finance + compliance</div></div></section>');
+    }
+  }
+
+  if (lesson === '21') {
+    var api = heading('API Workflows') || document.querySelector('.lesson-body h2');
+    if (api && !document.querySelector('[data-feedback="api-example"]')) {
+      after(api,
+        '<section data-feedback="api-example"><h2>Worked Example: Customer Status API Workflow</h2>' +
+        '<p>The workflow receives a <code>customerId</code>, calls the customer service through HTTP, evaluates the response, and returns governed JSON.</p>' +
+        '<div class="feedback-flow"><div class="feedback-node"><strong>Input</strong><br>customerId</div><div class="feedback-arrow">→</div><div class="feedback-node"><strong>HTTP GET</strong><br>/customers/{id}</div><div class="feedback-arrow">→</div><div class="feedback-node decision"><strong>Decision</strong><br>200 / 404 / error</div><div class="feedback-arrow">→</div><div class="feedback-node result"><strong>Response</strong><br>status + customer data</div></div>' +
+        '<div class="feedback-grid">' +
+        '<figure class="feedback-figure"><img loading="lazy" src="https://dev-assets.cms.uipath.com/assets/images/studio-web/studio-web-test-input-and-output-panels-582812-b7ffa5ec.webp" alt="UiPath API workflow test input and output panels"><figcaption>Validate mappings with test input and expression output. Source: <a target="_blank" rel="noopener noreferrer" href="https://docs.uipath.com/studio-web/automation-cloud/latest/user-guide/http">UiPath HTTP activity example</a>.</figcaption></figure>' +
+        '<figure class="feedback-figure"><img loading="lazy" src="https://dev-assets.cms.uipath.com/assets/images/studio-web/studio-web-debug-panel-with-response-582820-af3ed665.webp" alt="UiPath API workflow debug response panel"><figcaption>Debug the workflow and inspect the API response. Source: <a target="_blank" rel="noopener noreferrer" href="https://docs.uipath.com/studio-web/automation-cloud/latest/user-guide/http">UiPath HTTP activity example</a>.</figcaption></figure>' +
+        '</div></section>');
+    }
+  }
+
+  if (lesson === '22') {
+    var incomplete = heading('From Polling to Real Time: The Shift to');
+    if (incomplete) {
+      incomplete.textContent = 'From Polling to Real Time: The Shift to Event-Driven Automation';
+      var next = incomplete.nextElementSibling;
+      if (next && /^H[23]$/.test(next.tagName) && /Event-Driven Automation/i.test(next.textContent)) next.remove();
+    }
+  }
+
+  if (lesson === '23') {
+    var body = document.querySelector('.lesson-body');
+    if (body && !document.querySelector('[data-feedback="autopilot-short"]')) {
+      body.innerHTML = '<section data-feedback="autopilot-short">' +
+        '<p class="feedback-callout"><strong>Goal:</strong> Create a focused Autopilot for a business use case with clear instructions, trusted context, and approved tools.</p>' +
+        '<div class="feedback-grid">' +
+        '<article class="feedback-card"><strong>1. Open configuration</strong><p>Go to Automation Cloud → Admin → AI Trust Layer → Autopilot for Everyone and select <em>Create a specialized Autopilot</em>.</p></article>' +
+        '<article class="feedback-card"><strong>2. Define the experience</strong><p>Enter the display name, description, Orchestrator folder, and focused custom system prompt.</p></article>' +
+        '<article class="feedback-card"><strong>3. Add starting prompts</strong><p>Save the general settings and add short, task-oriented starting prompts.</p></article>' +
+        '<article class="feedback-card"><strong>4. Connect and test</strong><p>Enable the required Context Grounding indexes and approved tools, then test the experience.</p></article></div>' +
+        '<figure class="feedback-figure"><img loading="lazy" src="https://dev-assets.cms.uipath.com/assets/images/autopilot/autopilot-autopilot-for-everyone-landing-page-558893-f5522d9a-b952ba28.webp" alt="UiPath Autopilot for Everyone landing page"><figcaption>The learner-facing landing page shows the title, description, chat box, and starting prompts. Source: <a target="_blank" rel="noopener noreferrer" href="https://docs.uipath.com/autopilot/other/latest/user-guide/launching-autopilot-for-everyone">Launching Autopilot for Everyone</a>.</figcaption></figure>' +
+        '<p><a class="feedback-source" target="_blank" rel="noopener noreferrer" href="https://docs.uipath.com/autopilot/other/latest/user-guide/specialized-autopilot">Official specialized Autopilot setup</a></p>' +
+        '<section class="summary-box"><h2>Course Complete</h2><p><strong>Congratulations!</strong> You have completed the Agentic Automation Professional course.</p></section></section>';
+    }
+  }
+})();
