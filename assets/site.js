@@ -702,3 +702,189 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready, { once: true });
   else ready();
 })();
+
+
+/* Course content integrity, flashcards, and lesson checks - 2026-07-30 v2 */
+(function () {
+  "use strict";
+
+  function initContentV2() {
+    if (document.documentElement.hasAttribute('data-course-content-v2')) return;
+    document.documentElement.setAttribute('data-course-content-v2', 'true');
+
+    var lessonMatch = location.pathname.match(/lesson-(\d{2})\.html$/);
+    if (!lessonMatch) return;
+    var lesson = parseInt(lessonMatch[1], 10);
+    if (lesson === 9 || lesson === 10 || lesson === 11) return;
+    var body = document.querySelector('.lesson-body');
+    if (!body) return;
+
+    function exact(selector, value) {
+      return Array.prototype.find.call(body.querySelectorAll(selector), function (el) { return el.textContent.trim() === value; });
+    }
+    function prefix(selector, value) {
+      return Array.prototype.find.call(body.querySelectorAll(selector), function (el) { return el.textContent.trim().indexOf(value) === 0; });
+    }
+    function replaceRange(first, last, html) {
+      if (!first || !last) return;
+      var holder = document.createElement('div');
+      holder.innerHTML = html;
+      while (holder.firstChild) first.parentNode.insertBefore(holder.firstChild, first);
+      var node = first;
+      while (node) {
+        var next = node.nextSibling;
+        node.remove();
+        if (node === last) break;
+        node = next;
+      }
+    }
+    function replaceUntil(first, endExclusive, html) {
+      if (!first || !endExclusive) return;
+      replaceRange(first, endExclusive.previousElementSibling, html);
+    }
+    function flashCard(term, definition) {
+      return '<button type="button" class="flashcard" aria-pressed="false"><div class="flashcard__inner"><div class="flashcard__face flashcard__face--front"><div class="flashcard__label">Scenario · tap to flip</div><div class="flashcard__term">' + term + '</div></div><div class="flashcard__face flashcard__face--back"><div class="flashcard__label">Agentic capability</div><div class="flashcard__def">' + definition + '</div></div></div></button>';
+    }
+    function bindCards() {
+      body.querySelectorAll('.flashcard').forEach(function (oldCard) {
+        var card = oldCard.cloneNode(true);
+        oldCard.replaceWith(card);
+        card.setAttribute('aria-pressed', 'false');
+        function flip() {
+          var state = card.classList.toggle('is-flipped');
+          card.setAttribute('aria-pressed', String(state));
+        }
+        card.addEventListener('click', flip);
+        card.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); flip(); }
+        });
+      });
+    }
+
+    if (lesson === 2) {
+      var flashHeading = document.getElementById('agentic-automation-use-cases-flashcard-review');
+      var valueParagraph = prefix('p', 'To ensure agentic automation delivers real value');
+      if (flashHeading && valueParagraph) {
+        var flashIntro = flashHeading.nextElementSibling;
+        var flashFirst = flashIntro ? flashIntro.nextElementSibling : null;
+        replaceUntil(flashFirst, valueParagraph,
+          '<div class="flashcards qa-flashcards">' +
+          flashCard('Automatically rebooking flights during disruptions', 'Complex decision-making and contextual awareness') +
+          flashCard('Classifying medical billing codes from unstructured records', 'Data interpretation and knowledge-based reasoning') +
+          flashCard('Analyzing customer sentiment from support tickets', 'Natural-language interaction and insight generation') +
+          flashCard('Validating procurement contracts for compliance', 'Multi-step workflow and knowledge-based logic') +
+          flashCard('Coordinating IT incident response across systems', 'Cross-system integration and adaptive logic') +
+          '</div>');
+      }
+
+      var storiesStart = exact('p', 'Agentic Automation in Action: Real-World Stories');
+      var storiesEnd = body.querySelector('.quiz');
+      if (storiesStart && storiesEnd) replaceUntil(storiesStart, storiesEnd,
+        '<h2>Agentic Automation in Action: Real-World Stories</h2><p>Each example shows the agent role, operating context, actions, business value, and measurable success criteria.</p>' +
+        '<div class="qa-story-grid"><article><h3>Flight Disruption Manager</h3><span>Transportation</span><dl><dt>Role</dt><dd>Proactively manage passenger itineraries during delays and cancellations.</dd><dt>Actions</dt><dd>Rebook flights, notify passengers, and offer approved compensation.</dd><dt>Interactions</dt><dd>Airline systems, mobile notifications, service portals, and human agents.</dd><dt>Success</dt><dd>Fewer complaints, faster recovery, and improved passenger retention.</dd></dl></article>' +
+        '<article><h3>KYC Research Agent</h3><span>Banking and finance</span><dl><dt>Role</dt><dd>Support customer due diligence and risk assessment.</dd><dt>Actions</dt><dd>Gather approved data, compare sources, and summarize risk indicators.</dd><dt>Interactions</dt><dd>Onboarding systems, compliance teams, and human reviewers.</dd><dt>Success</dt><dd>Faster onboarding with fewer research and compliance errors.</dd></dl></article>' +
+        '<article><h3>Medical Record Summarization Agent</h3><span>Healthcare</span><dl><dt>Role</dt><dd>Summarize unstructured medical records for clinical review.</dd><dt>Actions</dt><dd>Extract relevant findings, identify gaps, and prepare a concise summary.</dd><dt>Interactions</dt><dd>Clinical document stores and authorized healthcare professionals.</dd><dt>Success</dt><dd>Reduced review time while preserving privacy and human oversight.</dd></dl></article>' +
+        '<article><h3>Promo Qualification Agent</h3><span>Telecommunications</span><dl><dt>Role</dt><dd>Evaluate customer eligibility using current campaign rules and context.</dd><dt>Actions</dt><dd>Gather account data, reason across conditions, and recommend eligible offers.</dd><dt>Interactions</dt><dd>CRM, billing systems, campaign services, and customer-service teams.</dd><dt>Success</dt><dd>Faster, more consistent, and personalized offer decisions.</dd></dl></article></div>');
+
+      var classifyStart = document.getElementById('classify-automation-scenarios');
+      var lessonSummary = prefix('p', 'In this lesson, you explored');
+      if (classifyStart && lessonSummary) replaceUntil(classifyStart, lessonSummary,
+        '<section class="qa-section"><h2 id="classify-automation-scenarios">Classify Automation Scenarios</h2><p>Use the nature of the inputs and decisions to select the right automation approach.</p><div class="qa-scenario-grid"><article><h3>Agentic automation</h3><ul><li>Interpret unstructured customer feedback and escalate complex cases.</li><li>Generate dynamic risk analysis using multiple approved data sources.</li><li>Adapt the plan when context, exceptions, or outcomes change.</li></ul></article><article><h3>Traditional RPA</h3><ul><li>Process identical invoices using stable validation rules.</li><li>Fill a web form with structured data and predictable steps.</li><li>Repeat high-volume actions where the same input requires the same output.</li></ul></article></div></section>');
+    }
+
+    if (lesson === 5) {
+      var ingestion = document.getElementById('ingestion-workflow-for-context-grounding');
+      var semantic = document.getElementById('semantic-search');
+      if (ingestion && semantic) replaceUntil(ingestion.nextElementSibling, semantic,
+        '<div class="qa-pipeline"><article><b>1</b><strong>Connect a source</strong><span>Use an Orchestrator bucket or an approved document-storage connection.</span></article><article><b>2</b><strong>Ingest and extract</strong><span>Fetch supported files and extract text, tables, and visual content.</span></article><article><b>3</b><strong>Chunk and embed</strong><span>Convert content into searchable representations using UiPath-managed models.</span></article><article><b>4</b><strong>Store in an index</strong><span>Organize embeddings in a permission-aware managed vector database.</span></article><article><b>5</b><strong>Sync and validate</strong><span>Refresh changed content, review citations, and test retrieval quality.</span></article></div>' +
+        '<figure class="qa-official-figure"><a href="https://docs.uipath.com/automation-cloud/automation-cloud/latest/admin-guide/about-context-grounding" target="_blank" rel="noopener"><img src="https://dev-assets.cms.uipath.com/assets/images/automation-cloud/automation-cloud-context-grounding-component-architecture-image-455462-f4f3bbcb-1c579487.webp" alt="Official UiPath Context Grounding component architecture" loading="lazy"></a><figcaption>Official UiPath Context Grounding architecture. <a href="https://docs.uipath.com/automation-cloud/automation-cloud/latest/admin-guide/about-context-grounding" target="_blank" rel="noopener">View source ↗</a></figcaption></figure><h2>Configuring Search Strategies: Semantic, Structured, and DeepRAG</h2><p>Choose the retrieval method that matches the source format and reasoning requirement.</p>');
+
+      var matchStart = document.getElementById('match-search-strategies-to-scenarios');
+      var matchEnd = prefix('p', 'In this lesson, you learned');
+      if (matchStart && matchEnd) replaceUntil(matchStart, matchEnd,
+        '<section class="qa-section"><h2 id="match-search-strategies-to-scenarios">Match Search Strategies to Scenarios</h2><div class="qa-scenario-grid qa-three"><article><h3>Semantic Search</h3><p>Best for natural-language questions over unstructured PDFs, emails, policies, and documents.</p></article><article><h3>Structured Search</h3><p>Best for precise queries, filtering, aggregation, and reports over CSV or tabular business data.</p></article><article><h3>DeepRAG</h3><p>Best for complex questions requiring synthesis across multiple PDF documents with citation-backed answers.</p></article></div></section>');
+    }
+
+    if (lesson === 7) {
+      var integrationStart = document.getElementById('integration-method-scenarios');
+      var integrationEnd = prefix('p', 'Integrating agents with enterprise systems');
+      if (integrationStart && integrationEnd) replaceUntil(integrationStart, integrationEnd,
+        '<section class="qa-section"><h2 id="integration-method-scenarios">Integration Method Scenarios</h2><p>Select the integration based on the target system and the information required.</p><div class="qa-scenario-grid qa-three"><article><h3>API Integration</h3><p>Fetch customer data from a cloud CRM through a secured, governed API.</p></article><article><h3>RPA Integration</h3><p>Extract information from a legacy application or automate a web workflow that has no suitable API.</p></article><article><h3>Index and Context Integration</h3><p>Answer questions using permissioned company policies and other approved enterprise knowledge.</p></article></div></section>');
+      var feedbackTitle = exact('p', 'Leverage Feedback Loops');
+      if (feedbackTitle) { var feedbackH = document.createElement('h3'); feedbackH.className = 'qa-highlight-heading'; feedbackH.textContent = 'Leverage Feedback Loops'; feedbackTitle.replaceWith(feedbackH); }
+    }
+
+    if (lesson === 8) {
+      var feedback = document.getElementById('feedback-loops');
+      if (feedback && feedback.nextElementSibling) {
+        feedback.nextElementSibling.remove();
+        feedback.insertAdjacentHTML('afterend',
+          '<p>A feedback loop turns production evidence into controlled improvements. Feedback does not update an agent automatically: teams review evidence, diagnose the cause, change the design, test it, publish it, and monitor the result.</p>' +
+          '<div class="qa-loop"><span>1. Observe</span><span>2. Diagnose</span><span>3. Update design</span><span class="qa-loop__focus">4. Test changes</span><span>5. Deploy</span><span>6. Monitor again</span></div>' +
+          '<figure class="qa-official-figure"><a href="https://docs.uipath.com/agents/automation-cloud/latest/user-guide/conversational-agents-observability" target="_blank" rel="noopener"><img src="https://dev-assets.cms.uipath.com/assets/images/agents/lifecycle-diagram-84d29f0b.webp" alt="Official UiPath feedback loop diagram for the agent lifecycle" loading="lazy"></a><figcaption>Official UiPath feedback-loop diagram. <a href="https://docs.uipath.com/agents/automation-cloud/latest/user-guide/conversational-agents-observability" target="_blank" rel="noopener">View source ↗</a></figcaption></figure>' +
+          '<div class="qa-callout"><strong>Step 4 — Test changes before deployment</strong><p>Create evaluation cases covering the issue, expected output, edge cases, tool behavior, and escalation path. Compare the new results with the current baseline before publishing.</p></div>');
+      }
+      var dynamicHeading = document.getElementById('dynamic-evaluation');
+      var feedbackTerms = Array.prototype.find.call(body.querySelectorAll('h2,h3'), function (h) { return h.id !== 'feedback-loops' && h.textContent.trim() === 'Feedback Loop'; });
+      if (feedbackTerms && dynamicHeading) replaceUntil(feedbackTerms, dynamicHeading,
+        '<section class="qa-definition-grid"><article><h3>Feedback Loop</h3><p>A controlled cycle in which user ratings, trace findings, and business outcomes inform tested improvements.</p></article><article><h3>Human-in-the-Loop</h3><p>A person reviews, approves, corrects, or intervenes in sensitive agent decisions.</p></article><article><h3>Compliance Control</h3><p>A policy, guardrail, or approval mechanism that keeps agent behavior within business and regulatory requirements.</p></article></section>');
+    }
+
+    if (lesson === 16) {
+      var stepOne = exact('p', 'Step 1');
+      var callbackList = body.querySelector('ol.steps');
+      if (stepOne && callbackList) replaceRange(stepOne, callbackList,
+        '<ol class="qa-steps qa-lifecycle"><li><strong>Job triggered</strong><span>The orchestration system starts the agent and immediately returns a Job ID.</span></li><li><strong>Pending</strong><span>The job is accepted and waits for execution capacity. Store the Job ID and continue other work.</span></li><li><strong>Running</strong><span>The agent executes asynchronously. Do not submit the same work again while this job is active.</span></li><li><strong>Terminal state</strong><span>The job becomes Completed, Failed, Timed Out, or Cancelled. Capture the result or error and apply the matching recovery rule.</span></li><li><strong>Callback or event processed</strong><span>A webhook, polling response, or event notifies the caller so downstream processing can continue safely.</span></li></ol>' +
+        '<figure class="qa-official-figure"><a href="https://docs.uipath.com/maestro/automation-cloud/latest/user-guide/events" target="_blank" rel="noopener"><img src="https://dev-assets.cms.uipath.com/assets/images/maestro/maestro-message-start-event-properties-589229-593840aa.webp" alt="Official UiPath Maestro message event configuration" loading="lazy"></a><figcaption>Official UiPath Maestro event configuration example. <a href="https://docs.uipath.com/maestro/automation-cloud/latest/user-guide/events" target="_blank" rel="noopener">View source ↗</a></figcaption></figure>');
+    }
+
+    bindCards();
+
+    var checks = {
+      1:{q:'Which statement best distinguishes a UiPath Agent from traditional RPA?',o:['Agents reason over context; RPA follows deterministic rules','Agents only copy data; RPA makes judgments','They are identical technologies'],c:0,n:'Agents handle contextual and ambiguous work, while RPA is best for predictable rule-based execution.'},
+      2:{q:'Which scenario is the strongest agentic automation candidate?',o:['Static data entry with fixed rules','Interpreting unstructured evidence and adapting a recommendation','Copying one value between two fields'],c:1,n:'Agentic automation is valuable when the work requires context, judgment, and adaptation.'},
+      3:{q:'What should an Agent Story define first?',o:['Only the user-interface color','The role, objective, context, actions, interactions, value, and success criteria','A fixed click-by-click script only'],c:1,n:'A complete Agent Story aligns the agent role and measurable outcome with its context and permitted actions.'},
+      4:{q:'What is the primary purpose of Context Grounding?',o:['Ground model responses in permissioned enterprise knowledge','Replace all access controls','Train public models with company data'],c:0,n:'Context Grounding retrieves approved enterprise information so generated answers are more relevant and support citations.'},
+      5:{q:'What keeps a Context Grounding index aligned with changed source content?',o:['Never updating the index','Running managed ingestion or the Update Context Grounding Index activity','Increasing the font size'],c:1,n:'Indexes must be refreshed when source documents change so retrieval uses current information.'},
+      6:{q:'When is DeepRAG the best fit?',o:['A simple exact lookup in one row','A complex question requiring synthesis across multiple PDF documents','A deterministic calculator'],c:1,n:'DeepRAG supports multi-document reasoning and citation-backed synthesis for complex questions.'},
+      7:{q:'Which integration is appropriate for a legacy application without a suitable API?',o:['RPA integration','Delete the application','Public web search'],c:0,n:'RPA can operate legacy user interfaces when a governed API is unavailable.'},
+      8:{q:'What should happen after an agent design is updated from production feedback?',o:['Deploy immediately without testing','Create evaluation tests, compare results, then publish','Discard the feedback'],c:1,n:'UiPath guidance places testing before deployment in the feedback-loop iteration process.'},
+      12:{q:'Why use a human-in-the-loop escalation?',o:['To review sensitive, ambiguous, or exceptional decisions','To remove all governance','To make every task manual'],c:0,n:'Human review adds oversight where risk, uncertainty, or policy requires intervention.'},
+      13:{q:'Where should sensitive configuration values be stored?',o:['Directly in page text','In governed assets or approved environment configuration','In public comments'],c:1,n:'Governed assets and environment configuration keep secrets out of agent logic and support controlled access.'},
+      14:{q:'What is the best evidence for diagnosing an unexpected agent decision?',o:['Execution traces with inputs, tool calls, outputs, and timing','A guess based on the title','Deleting logs'],c:0,n:'Traces provide the execution evidence needed to identify where behavior diverged from expectations.'},
+      15:{q:'Why shift long-running work from synchronous to asynchronous execution?',o:['To block the caller longer','To avoid blocking while work continues and handle completion later','To remove job status tracking'],c:1,n:'Asynchronous execution returns control to the caller and uses job state plus callbacks or events for completion.'},
+      16:{q:'What must Step 4 of the async lifecycle handle?',o:['Only the Running state','The terminal outcome: Completed, Failed, Timed Out, or Cancelled','A new duplicate job'],c:1,n:'Step 4 records the terminal result or error so the workflow can continue, retry, compensate, or escalate correctly.'},
+      17:{q:'What is the purpose of a dead-letter queue?',o:['Store events that could not be delivered after retries','Speed up every successful request','Replace monitoring'],c:0,n:'A dead-letter queue preserves failed messages for investigation and controlled recovery.'},
+      18:{q:'Why use process variables in Maestro?',o:['To preserve and exchange process state between activities','To style headings','To bypass permissions'],c:0,n:'Process variables hold the data that tasks, gateways, and activities need throughout the orchestration.'},
+      19:{q:'What should an expiry rule do when a user task exceeds its allowed time?',o:['Ignore the task forever','Execute the configured alert, reassignment, unassignment, or completion action','Delete the process definition'],c:1,n:'Expiry rules ensure overdue work follows a defined operational response.'},
+      20:{q:'What enables data-driven routing in a workflow?',o:['A gateway or decision rule evaluated against process data','Random page order','A fixed image'],c:0,n:'Gateways and expressions route each process instance according to its current data and conditions.'},
+      21:{q:'Which practice is essential for a secure API workflow?',o:['Expose credentials in the request','Use governed connections, validate inputs, and handle errors','Skip authentication'],c:1,n:'Secure API workflows require protected connections, input validation, least privilege, and explicit failure handling.'},
+      22:{q:'What makes webhook processing resilient?',o:['Assume every delivery happens once','Authenticate requests, acknowledge quickly, use idempotency, and retry safely','Disable logging'],c:1,n:'Webhooks can be retried or duplicated, so authentication, idempotency, and observable recovery are essential.'},
+      23:{q:'What must be enabled for a customized Autopilot to answer from company knowledge?',o:['The relevant Context Grounding index','A public search engine only','No knowledge source'],c:0,n:'A specialized Autopilot needs explicit access to the approved Context Grounding indexes used for its business scenario.'}
+    };
+
+    var check = checks[lesson];
+    if (check && !body.querySelector('.qa-lesson-check')) {
+      var section = document.createElement('section');
+      section.className = 'qa-lesson-check';
+      section.innerHTML = '<div class="qa-lesson-check__head">Lesson knowledge check</div><div class="qa-lesson-check__body"><h2>' + check.q + '</h2><div class="qa-check-options">' + check.o.map(function (option, index) { return '<label><input type="radio" name="qa-check-' + lesson + '" value="' + index + '"><span>' + option + '</span></label>'; }).join('') + '</div><button type="button" class="qa-check-button">Check answer</button><div class="qa-check-feedback" role="status" aria-live="polite"></div></div>';
+      var completion = body.querySelector('.qa-complete');
+      if (completion) body.insertBefore(section, completion); else body.appendChild(section);
+      section.querySelector('.qa-check-button').addEventListener('click', function () {
+        var selected = section.querySelector('input:checked');
+        var feedbackBox = section.querySelector('.qa-check-feedback');
+        if (!selected) { feedbackBox.className = 'qa-check-feedback is-warning'; feedbackBox.textContent = 'Select an answer first.'; return; }
+        var correct = parseInt(selected.value, 10) === check.c;
+        feedbackBox.className = 'qa-check-feedback ' + (correct ? 'is-correct' : 'is-incorrect');
+        feedbackBox.textContent = (correct ? 'Correct. ' : 'Not quite. ') + check.n;
+      });
+    }
+
+    var style = document.createElement('style');
+    style.textContent = '.qa-story-grid,.qa-scenario-grid,.qa-definition-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1.25rem 0}.qa-three{grid-template-columns:repeat(3,minmax(0,1fr))}.qa-story-grid article,.qa-scenario-grid article,.qa-definition-grid article{padding:1.1rem;border:1px solid #d7dbe0;border-top:4px solid #fa4616;border-radius:12px;background:#fff}.qa-story-grid h3,.qa-scenario-grid h3,.qa-definition-grid h3{margin:.1rem 0 .5rem}.qa-story-grid>article>span{color:#53606d;font-weight:700}.qa-story-grid dl{display:grid;grid-template-columns:6rem 1fr;gap:.45rem .6rem;margin:1rem 0 0}.qa-story-grid dt{font-weight:900}.qa-story-grid dd{margin:0}.qa-pipeline{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.75rem;margin:1.4rem 0}.qa-pipeline article{display:flex;flex-direction:column;gap:.45rem;padding:1rem;border:1px solid #d7dbe0;border-radius:12px;background:#fff}.qa-pipeline b{display:grid;place-items:center;width:2rem;height:2rem;border-radius:50%;background:#fa4616;color:#fff}.qa-pipeline span{color:#53606d;font-size:.9rem}.qa-loop{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.55rem;margin:1.2rem 0}.qa-loop span{padding:.8rem .55rem;border-radius:10px;background:#18242e;color:#fff;text-align:center;font-weight:700}.qa-loop .qa-loop__focus{background:#fa4616}.qa-callout{margin:1.2rem 0;padding:1rem 1.1rem;border-left:5px solid #fa4616;border-radius:10px;background:#fff0eb}.qa-highlight-heading{padding:.65rem 1rem;border-left:5px solid #00a68a;background:#e5f7f4}.qa-lesson-check{margin:3rem 0 1.5rem;border:1px solid #cfd5da;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 6px 20px rgba(24,36,46,.08)}.qa-lesson-check__head{padding:.8rem 1rem;background:#18242e;color:#fff;font-size:.8rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}.qa-lesson-check__body{padding:1.25rem}.qa-lesson-check__body h2{margin-top:0}.qa-check-options{display:grid;gap:.65rem}.qa-check-options label{display:flex;gap:.7rem;align-items:flex-start;padding:.8rem;border:1px solid #d7dbe0;border-radius:9px;cursor:pointer}.qa-check-options label:hover{border-color:#fa4616;background:#fff8f5}.qa-check-button{margin-top:1rem;padding:.7rem 1rem;border:0;border-radius:999px;background:#fa4616;color:#fff;font-weight:900;cursor:pointer}.qa-check-feedback{margin-top:.8rem;padding:.8rem;border-radius:8px}.qa-check-feedback:empty{display:none}.qa-check-feedback.is-correct{background:#e5f7f4;color:#006d64}.qa-check-feedback.is-incorrect,.qa-check-feedback.is-warning{background:#fff0eb;color:#9d2b0b}@media(max-width:900px){.qa-pipeline,.qa-loop{grid-template-columns:repeat(2,minmax(0,1fr))}.qa-three{grid-template-columns:1fr}}@media(max-width:650px){.qa-story-grid,.qa-scenario-grid,.qa-definition-grid,.qa-pipeline,.qa-loop{grid-template-columns:1fr}.qa-story-grid dl{grid-template-columns:1fr}.qa-story-grid dd{margin-bottom:.5rem}}';
+    document.head.appendChild(style);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initContentV2, {once:true});
+  else initContentV2();
+})();
