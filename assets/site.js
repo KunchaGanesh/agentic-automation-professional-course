@@ -888,3 +888,34 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initContentV2, {once:true});
   else initContentV2();
 })();
+
+
+/* Compatibility fix for imported heading conversions - 2026-07-30 v2.1 */
+(function(){
+  "use strict";
+  function run(){
+    if(document.documentElement.hasAttribute('data-course-content-v21')) return;
+    document.documentElement.setAttribute('data-course-content-v21','true');
+    var match=location.pathname.match(/lesson-(\d{2})\.html$/); if(!match) return;
+    var lesson=parseInt(match[1],10), body=document.querySelector('.lesson-body'); if(!body) return;
+    function exact(selector,text){return Array.prototype.find.call(body.querySelectorAll(selector),function(el){return el.textContent.trim()===text;});}
+    function replaceUntil(first,endExclusive,html){if(!first||!endExclusive)return;var box=document.createElement('div');box.innerHTML=html;while(box.firstChild)first.parentNode.insertBefore(box.firstChild,first);var node=first;while(node&&node!==endExclusive){var next=node.nextSibling;node.remove();node=next;}}
+    function replaceRange(first,last,html){if(!first||!last)return;var box=document.createElement('div');box.innerHTML=html;while(box.firstChild)first.parentNode.insertBefore(box.firstChild,first);var node=first;while(node){var next=node.nextSibling;node.remove();if(node===last)break;node=next;}}
+    if(lesson===2){
+      var stories=exact('h2,h3,p','Agentic Automation in Action: Real-World Stories');
+      var quiz=body.querySelector('.quiz');
+      if(stories&&quiz&&!body.querySelector('.qa-story-grid')) replaceUntil(stories,quiz,
+        '<h2>Agentic Automation in Action: Real-World Stories</h2><p>Each example shows the agent role, operating context, actions, business value, and measurable success criteria.</p><div class="qa-story-grid">' +
+        '<article><h3>Flight Disruption Manager</h3><span>Transportation</span><dl><dt>Role</dt><dd>Manage passenger itineraries during delays and cancellations.</dd><dt>Actions</dt><dd>Rebook flights, notify passengers, and offer approved compensation.</dd><dt>Interactions</dt><dd>Airline systems, mobile notifications, service portals, and human agents.</dd><dt>Success</dt><dd>Fewer complaints, faster recovery, and improved retention.</dd></dl></article>' +
+        '<article><h3>KYC Research Agent</h3><span>Banking and finance</span><dl><dt>Role</dt><dd>Support customer due diligence and risk assessment.</dd><dt>Actions</dt><dd>Gather approved data, compare sources, and summarize risk indicators.</dd><dt>Interactions</dt><dd>Onboarding systems, compliance teams, and human reviewers.</dd><dt>Success</dt><dd>Faster onboarding with fewer research and compliance errors.</dd></dl></article>' +
+        '<article><h3>Medical Record Summarization Agent</h3><span>Healthcare</span><dl><dt>Role</dt><dd>Summarize unstructured records for clinical review.</dd><dt>Actions</dt><dd>Extract findings, identify gaps, and prepare a concise summary.</dd><dt>Interactions</dt><dd>Clinical document stores and authorized healthcare professionals.</dd><dt>Success</dt><dd>Reduced review time with privacy and human oversight.</dd></dl></article>' +
+        '<article><h3>Promo Qualification Agent</h3><span>Telecommunications</span><dl><dt>Role</dt><dd>Evaluate eligibility using current campaign rules and context.</dd><dt>Actions</dt><dd>Gather account data, reason across conditions, and recommend offers.</dd><dt>Interactions</dt><dd>CRM, billing, campaign services, and customer-service teams.</dd><dt>Success</dt><dd>Faster, more consistent, personalized offer decisions.</dd></dl></article></div>');
+    }
+    if(lesson===16){
+      var stepOne=exact('h2,h3,p','Step 1'), callback=body.querySelector('ol.steps');
+      if(stepOne&&callback&&!body.querySelector('.qa-lifecycle')) replaceRange(stepOne,callback,
+        '<ol class="qa-steps qa-lifecycle"><li><strong>Job triggered</strong><span>The orchestration system starts the agent and immediately returns a Job ID.</span></li><li><strong>Pending</strong><span>The job is accepted and waits for execution capacity. Store the Job ID and continue other work.</span></li><li><strong>Running</strong><span>The agent executes asynchronously. Do not submit the same work again while this job is active.</span></li><li><strong>Terminal state</strong><span>The job becomes Completed, Failed, Timed Out, or Cancelled. Capture the result or error and apply the matching recovery rule.</span></li><li><strong>Callback or event processed</strong><span>A webhook, polling response, or event notifies the caller so downstream processing can continue safely.</span></li></ol><figure class="qa-official-figure"><a href="https://docs.uipath.com/maestro/automation-cloud/latest/user-guide/events" target="_blank" rel="noopener"><img src="https://dev-assets.cms.uipath.com/assets/images/maestro/maestro-message-start-event-properties-589229-593840aa.webp" alt="Official UiPath Maestro message event configuration" loading="lazy"></a><figcaption>Official UiPath Maestro event configuration example. <a href="https://docs.uipath.com/maestro/automation-cloud/latest/user-guide/events" target="_blank" rel="noopener">View source ↗</a></figcaption></figure>');
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run,{once:true});else run();
+})();
