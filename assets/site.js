@@ -570,3 +570,135 @@
     }
   }
 })();
+
+
+/* Course QA, numbering, visuals, and accessibility update - 2026-07-30 */
+(function () {
+  "use strict";
+
+  function ready() {
+    if (document.documentElement.hasAttribute('data-course-qa-ready')) return;
+    document.documentElement.setAttribute('data-course-qa-ready', 'true');
+
+    /* Imported lesson files can contain a second complete document. Keep only the first course shell. */
+    var shells = document.querySelectorAll('.shell');
+    for (var si = 1; si < shells.length; si += 1) shells[si].remove();
+
+    var lessonMatch = location.pathname.match(/lesson-(\d{2})\.html$/);
+    var originalLesson = lessonMatch ? parseInt(lessonMatch[1], 10) : 0;
+    var removed = {9:true, 10:true, 11:true};
+    var displayNumber = function (n) { return n <= 8 ? n : n - 3; };
+    var pad = function (n) { return String(n).padStart(2, '0'); };
+
+    /* Remove retired coded-agent lessons and renumber the remaining 20 lessons consistently. */
+    document.querySelectorAll('a[href*="lesson-"]').forEach(function (link) {
+      var hit = (link.getAttribute('href') || '').match(/lesson-(\d{2})\.html/);
+      if (!hit) return;
+      var oldNo = parseInt(hit[1], 10);
+      if (removed[oldNo]) {
+        var removable = link.closest('.rail__item, .lesson-card');
+        if (removable) removable.remove();
+        return;
+      }
+      var newNo = displayNumber(oldNo);
+      var railNo = link.querySelector('.rail__num');
+      if (railNo) railNo.textContent = pad(newNo);
+      var cardNo = link.querySelector('.lesson-card__num');
+      if (cardNo) cardNo.textContent = pad(newNo);
+      var cardMeta = link.querySelector('.lesson-card__meta');
+      if (cardMeta) cardMeta.textContent = 'Lesson ' + pad(newNo) + ' of 20';
+      var navTitle = link.querySelector('.lesson-nav__title');
+      if (navTitle) navTitle.textContent = navTitle.textContent.replace(/Lesson\s+\d+/i, 'Lesson ' + newNo);
+    });
+
+    if (originalLesson && !removed[originalLesson]) {
+      var shown = displayNumber(originalLesson);
+      document.querySelectorAll('.lesson-eyebrow').forEach(function (el) { el.textContent = 'Lesson ' + shown + ' of 20'; });
+      document.querySelectorAll('.breadcrumb').forEach(function (el) { el.innerHTML = el.innerHTML.replace(/Lesson\s+\d+/i, 'Lesson ' + shown); });
+    }
+
+    /* Course overview copy requested in the review. */
+    if (!originalLesson) {
+      var kicker = document.querySelector('.hero__kicker');
+      if (kicker) kicker.textContent = 'Course Objective';
+      var heroText = document.querySelector('.hero__copy > p');
+      if (heroText) heroText.textContent = 'Understand how agentic AI combines reasoning, contextual decision-making, and enterprise automation. Learn to design, ground, govern, and integrate UiPath agents with reliable workflows and human oversight.';
+      var meta = document.querySelectorAll('.hero__meta > div');
+      meta.forEach(function (item) {
+        if (/Lessons/i.test(item.textContent)) { var strong = item.querySelector('strong'); if (strong) strong.textContent = '20'; }
+        if (/16\s*hours/i.test(item.textContent)) item.innerHTML = item.innerHTML.replace(/16\s*hours/i, '6 hours');
+      });
+      var audienceVersion = document.querySelector('.target-audience .course-objectives__eyebrow');
+      if (audienceVersion) audienceVersion.textContent = audienceVersion.textContent.replace(/March\s+2026\s*[·•-]?\s*/i, '').trim();
+      var sidebarKicker = document.querySelector('.sidebar__kicker');
+      if (sidebarKicker) sidebarKicker.textContent = 'UiPath Learning Course';
+      document.querySelectorAll('.course-objectives__grid li').forEach(function (item) {
+        if (/coded agents/i.test(item.textContent)) item.textContent = 'Apply governance, security, human oversight, and operational guardrails to enterprise agents.';
+      });
+    }
+
+    /* Make every flashcard reliably operable by pointer and keyboard. */
+    document.querySelectorAll('.flashcard').forEach(function (oldCard) {
+      var card = oldCard.cloneNode(true);
+      oldCard.replaceWith(card);
+      card.setAttribute('aria-pressed', 'false');
+      function toggleCard() {
+        var flipped = card.classList.toggle('is-flipped');
+        card.setAttribute('aria-pressed', String(flipped));
+      }
+      card.addEventListener('click', toggleCard);
+      card.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); toggleCard(); }
+      });
+    });
+
+    var body = document.querySelector('.lesson-body');
+    if (!body) return;
+
+    function addOnce(id, target, position, html) {
+      if (!target || document.getElementById(id)) return;
+      target.insertAdjacentHTML(position, html);
+    }
+
+    /* Lesson 01: official UiPath platform image and Agent-versus-RPA comparison. */
+    if (originalLesson === 1) {
+      var objectiveBox = body.querySelector('.objectives');
+      var lessonOneTarget = objectiveBox || body.firstElementChild;
+      addOnce('agent-rpa-visual', lessonOneTarget, objectiveBox ? 'afterend' : 'beforebegin',
+        '<section id="agent-rpa-visual" class="qa-section"><h2>Agent and RPA: Different Strengths, One Automation Platform</h2>' +
+        '<figure class="qa-official-figure"><a href="https://docs.uipath.com/agents/automation-cloud/latest/user-guide/agent-capabilities-in-the-uipath-platform" target="_blank" rel="noopener"><img src="https://dev-assets.cms.uipath.com/assets/images/agents/agents-docs-image-5-31bc8e3c.webp" alt="Official UiPath diagram showing agents, robots, and people in the automation workforce" loading="lazy"></a><figcaption>Official UiPath platform visual. <a href="https://docs.uipath.com/agents/automation-cloud/latest/user-guide/agent-capabilities-in-the-uipath-platform" target="_blank" rel="noopener">View source ↗</a></figcaption></figure>' +
+        '<div class="qa-compare"><article><span class="qa-chip">UiPath Agent</span><h3>Reasons and adapts</h3><p>Best for ambiguous, unstructured, or context-dependent work. Outcomes are probabilistic and require evaluation and guardrails.</p></article><article><span class="qa-chip qa-chip--blue">RPA Robot</span><h3>Follows deterministic rules</h3><p>Best for repetitive, structured, predictable system actions where the same inputs should produce the same result.</p></article><article><span class="qa-chip qa-chip--teal">Agentic workflow</span><h3>Combines judgment and execution</h3><p>The agent interprets and decides; RPA completes reliable system actions; a person reviews sensitive exceptions.</p></article></div>' +
+        '<p class="qa-source">Source: <a href="https://docs.uipath.com/agents/automation-cloud/latest/user-guide/about-agents" target="_blank" rel="noopener">UiPath — About agents</a></p></section>');
+    }
+
+    /* Lesson 03: the missing visual map showing where an agent fits. */
+    if (originalLesson === 3) {
+      var mapHeading = document.getElementById('agent-story-blueprint-visual-map');
+      if (!mapHeading) mapHeading = Array.prototype.find.call(body.querySelectorAll('h2'), function (h) { return /Agent Story Blueprint Visual Map/i.test(h.textContent); });
+      var mapAnchor = mapHeading ? (mapHeading.nextElementSibling || mapHeading) : body.firstElementChild;
+      addOnce('agent-fit-map', mapAnchor, 'afterend',
+        '<section id="agent-fit-map" class="qa-section qa-map"><h3>Use-Case Decision Map: Where the Agent Fits</h3>' +
+        '<div class="qa-map__flow"><div class="qa-map__question">What kind of work is required?</div><div class="qa-map__arrow">↓</div><div class="qa-map__branches"><article><strong>Structured + predictable</strong><span>Rules, stable inputs, repeatable steps</span><b>Use an RPA workflow</b></article><article><strong>Ambiguous + contextual</strong><span>Judgment, language, changing information</span><b>Use a UiPath Agent</b></article><article><strong>Judgment + system action</strong><span>Reasoning plus reliable execution</span><b>Use an agentic workflow</b><small>Agent + RPA + human review</small></article></div></div>' +
+        '<p class="qa-source">Source: <a href="https://docs.uipath.com/agents/automation-cloud/latest/user-guide/agent-vs-workflows" target="_blank" rel="noopener">UiPath — Agents versus workflows</a></p></section>');
+    }
+
+    /* Lesson 23: concise but complete customized Autopilot configuration guidance. */
+    if (originalLesson === 23) {
+      body.innerHTML =
+        '<h2>Configure a Customized Autopilot</h2><p>A customized Autopilot gives business users a focused conversational experience grounded in approved enterprise knowledge and connected to the automations they are allowed to use.</p>' +
+        '<figure class="qa-official-figure"><a href="https://docs.uipath.com/autopilot/other/latest/user-guide/launching-autopilot-for-everyone" target="_blank" rel="noopener"><img src="https://dev-assets.cms.uipath.com/assets/images/autopilot/autopilot-autopilot-for-everyone-landing-page-558893-f5522d9a-b952ba28.webp" alt="Official UiPath Autopilot for Everyone landing page" loading="lazy"></a><figcaption>Official UiPath Autopilot interface. <a href="https://docs.uipath.com/autopilot/other/latest/user-guide/launching-autopilot-for-everyone" target="_blank" rel="noopener">View source ↗</a></figcaption></figure>' +
+        '<h2>Configuration Steps</h2><ol class="qa-steps"><li><strong>Create or select the specialized Autopilot.</strong><span>Choose a clear name, description, and the business role it supports.</span></li><li><strong>Write the custom system prompt.</strong><span>Define its purpose, tone, allowed behavior, boundaries, and when it must ask for help.</span></li><li><strong>Add starting prompts.</strong><span>Give users useful example questions for the most common supported tasks.</span></li><li><strong>Connect approved knowledge.</strong><span>Enable the required Context Grounding indexes so answers use trusted organizational content.</span></li><li><strong>Enable tools and automations.</strong><span>Select only the processes and actions the Autopilot needs, using least-privilege access.</span></li><li><strong>Test, publish, and monitor.</strong><span>Validate common questions, unsupported requests, permissions, citations, and escalation behavior before sharing it.</span></li></ol>' +
+        '<div class="qa-compare qa-autopilot-check"><article><h3>System prompt</h3><p>State the role, scope, response style, policies, prohibited actions, and escalation rules.</p></article><article><h3>Starting prompts</h3><p>Use short examples that demonstrate what users can ask and the outcome they can expect.</p></article><article><h3>Knowledge and tools</h3><p>Grant only the indexes and automations needed for the supported business scenario.</p></article></div>' +
+        '<aside class="doc-links"><h2>Related UiPath documentation</h2><ul><li><a href="https://docs.uipath.com/autopilot/other/latest/user-guide/specialized-autopilot" target="_blank" rel="noopener">Specialized Autopilot ↗</a></li><li><a href="https://docs.uipath.com/autopilot/other/latest/user-guide/launching-autopilot-for-everyone" target="_blank" rel="noopener">Launching Autopilot for Everyone ↗</a></li></ul></aside>' +
+        '<section class="qa-complete"><span aria-hidden="true">✓</span><div><h2>Congratulations!</h2><p>You have completed the Agentic Automation Professional course.</p></div></section>';
+    }
+
+    var css = document.createElement('style');
+    css.textContent =
+      '.qa-section{margin:2.25rem 0;padding:1.5rem;border:1px solid #d7dbe0;border-radius:14px;background:#fff}.qa-official-figure{margin:1.25rem 0}.qa-official-figure img{display:block;width:100%;max-height:440px;object-fit:contain;border:1px solid #d7dbe0;border-radius:12px;background:#f7f8f9}.qa-official-figure figcaption{margin-top:.55rem;font-size:.85rem;color:#53606d}.qa-compare{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin:1.25rem 0}.qa-compare article{padding:1rem;border:1px solid #d7dbe0;border-top:4px solid #fa4616;border-radius:10px;background:#f8f9fa}.qa-compare h3{margin:.6rem 0}.qa-chip{display:inline-block;padding:.28rem .55rem;border-radius:999px;background:#fff0eb;color:#b9320d;font-weight:700;font-size:.78rem}.qa-chip--blue{background:#e8f1ff;color:#1558a6}.qa-chip--teal{background:#def6f2;color:#006d64}.qa-source{font-size:.9rem}.qa-map{background:#f8f9fa}.qa-map__flow{text-align:center}.qa-map__question{display:inline-block;padding:.75rem 1rem;border-radius:10px;background:#18242e;color:#fff;font-weight:700}.qa-map__arrow{font-size:1.7rem;color:#fa4616}.qa-map__branches{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.qa-map__branches article{display:flex;min-height:180px;flex-direction:column;gap:.55rem;padding:1rem;border:2px solid #d7dbe0;border-radius:12px;background:#fff}.qa-map__branches article:nth-child(2){border-color:#fa4616}.qa-map__branches span,.qa-map__branches small{color:#53606d}.qa-map__branches b{margin-top:auto;color:#fa4616}.qa-steps{list-style:none;counter-reset:qastep;padding:0;margin:1.4rem 0}.qa-steps li{counter-increment:qastep;display:grid;grid-template-columns:2.3rem 1fr;column-gap:.8rem;padding:1rem 0;border-bottom:1px solid #e4e7ea}.qa-steps li:before{content:counter(qastep);grid-row:1/3;display:grid;place-items:center;width:2.2rem;height:2.2rem;border-radius:50%;background:#fa4616;color:#fff;font-weight:900}.qa-steps span{grid-column:2;color:#53606d}.qa-complete{display:flex;gap:1rem;align-items:center;margin:2rem 0;padding:1.4rem;border-left:5px solid #00a68a;border-radius:12px;background:#e5f7f4}.qa-complete>span{display:grid;place-items:center;width:2.8rem;height:2.8rem;border-radius:50%;background:#00a68a;color:#fff;font-size:1.5rem;font-weight:900}.qa-complete h2,.qa-complete p{margin:.2rem 0}@media(max-width:760px){.qa-compare,.qa-map__branches{grid-template-columns:1fr}.qa-section{padding:1rem}}';
+    document.head.appendChild(css);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready, { once: true });
+  else ready();
+})();
